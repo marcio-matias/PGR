@@ -269,104 +269,150 @@
     </section>
 
     <section class="card" id="inventario">
-      <h2>Inventário de Riscos</h2>
+  <h2>Inventário de Riscos</h2>
 
-      <div class="grid">
-        <label>GES/GHE
-          <input type="text" id="gesGheRisco" placeholder="Ex.: GHE-01 - Operadores de empilhadeira">
-        </label>
+  <div class="grid">
+    <label>GES/GHE
+      <input type="text" id="gesGheRisco" placeholder="Ex.: GHE-01 - Operacional">
+    </label>
 
-        <label>Perigo / Fator de risco
-          <input type="text" id="perigoRisco" placeholder="Ex.: Ruído acima de 80 dB(A)">
-        </label>
+    <label>Setor
+      <input type="text" id="setorRisco" placeholder="Ex.: Operacional">
+    </label>
 
-        <label>Agravos
-          <input type="text" id="agravosRisco" placeholder="Ex.: Perda auditiva, estresse">
-        </label>
+    <label>Cargo/Função
+      <input type="text" id="funcaoRisco" placeholder="Ex.: Soldador">
+    </label>
 
-        <label>Causas
-          <input type="text" id="causasRisco" placeholder="Ex.: Motor de equipamento, operação de máquina">
-        </label>
+    <label>Atividade
+      <input type="text" id="atividadeRisco" placeholder="Ex.: Soldagem de estruturas metálicas">
+    </label>
 
-        <label>Controles existentes
-          <input type="text" id="controlesRisco" placeholder="Ex.: Protetor auricular, enclausuramento">
-        </label>
+    <label>Perigo / Fator de risco
+      <input type="text" id="perigoRisco" placeholder="Ex.: Fumos metálicos">
+    </label>
 
-        <label>População exposta
-          <input type="text" id="populacaoRisco" placeholder="Ex.: Operador de empilhadeira">
-        </label>
+    <label>Tipo de risco
+      <select id="tipoRisco">
+        <option value="">Selecione</option>
+        <option value="Físico">Físico</option>
+        <option value="Químico">Químico</option>
+        <option value="Biológico">Biológico</option>
+        <option value="Ergonômico">Ergonômico</option>
+        <option value="Acidente">Acidente</option>
+      </select>
+    </label>
 
-        <label>Exposição
-          <input type="text" id="exposicaoRisco" placeholder="Ex.: NEN 87 dB(A), eventual, habitual">
-        </label>
+    <label>Agravos / Possíveis danos
+      <input type="text" id="agravosRisco" placeholder="Ex.: Irritação respiratória, doença pulmonar">
+    </label>
 
-        <label>Tipo de avaliação
-          <select id="tipoAvaliacaoRisco">
-            <option value="">Selecione</option>
-            <option value="Qualitativa">Qualitativa</option>
-            <option value="Quantitativa">Quantitativa</option>
-          </select>
-        </label>
+    <label>Causas
+      <input type="text" id="causasRisco" placeholder="Ex.: Processo de soldagem">
+    </label>
 
-        <label>Probabilidade (P)
-          <select id="probabilidadeRisco">
-            <option value="">Selecione</option>
-            <option value="1">1 - Baixa</option>
-            <option value="2">2 - Pequena</option>
-            <option value="3">3 - Moderada</option>
-            <option value="4">4 - Alta</option>
-            <option value="5">5 - Muito alta</option>
-          </select>
-        </label>
+    <label>Controles existentes
+      <input type="text" id="controlesRisco" placeholder="Ex.: Ventilação, máscara PFF2">
+    </label>
 
-        <label>Severidade (S)
-          <select id="severidadeRisco">
-            <option value="">Selecione</option>
-            <option value="1">1 - Leve</option>
-            <option value="2">2 - Baixa</option>
-            <option value="3">3 - Moderada</option>
-            <option value="4">4 - Grave</option>
-            <option value="5">5 - Crítica</option>
-          </select>
-        </label>
+    <label>EPIs recomendados
+      <input type="text" id="episRisco" placeholder="Ex.: Máscara PFF2, luva de raspa">
+    </label>
 
-        <label>EPIs recomendados
-          <input type="text" id="episRisco" placeholder="Ex.: Protetor auricular tipo concha">
-        </label>
-      </div>
+    <label>População exposta
+      <input type="text" id="populacaoRisco" placeholder="Ex.: Soldadores">
+    </label>
 
-      <button class="botao-secundario" onclick="adicionarRisco()">
-        Adicionar risco ao inventário
-      </button>
+    <label>Exposição
+      <select id="exposicaoRisco">
+        <option value="">Selecione</option>
+        <option value="Eventual">Eventual</option>
+        <option value="Intermitente">Intermitente</option>
+        <option value="Habitual">Habitual</option>
+        <option value="Permanente">Permanente</option>
+      </select>
+    </label>
 
-      <button class="botao-secundario" onclick="adicionarInventarioAoDocumentoBase()">
-        Adicionar Inventário ao Documento Base
-      </button>
+    <label>Tipo de avaliação
+      <select id="tipoAvaliacaoRisco">
+        <option value="">Selecione</option>
+        <option value="Qualitativa">Qualitativa</option>
+        <option value="Quantitativa">Quantitativa</option>
+      </select>
+    </label>
 
-      <div class="tabela-container">
-        <table id="tabelaInventario">
-          <thead>
-            <tr>
-              <th>GES/GHE</th>
-              <th>Perigo/Fator de risco</th>
-              <th>Agravos</th>
-              <th>Causas</th>
-              <th>Controles existentes</th>
-              <th>População exposta</th>
-              <th>Exposição</th>
-              <th>Tipo avaliação</th>
-              <th>P</th>
-              <th>S</th>
-              <th>R</th>
-              <th>Classificação</th>
-              <th>Monitoramento</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
+    <label>Probabilidade (P)
+      <select id="probabilidadeRisco">
+        <option value="">Selecione</option>
+        <option value="1">1 - Baixa</option>
+        <option value="2">2 - Pequena</option>
+        <option value="3">3 - Moderada</option>
+        <option value="4">4 - Alta</option>
+        <option value="5">5 - Muito alta</option>
+      </select>
+    </label>
+
+    <label>Severidade (S)
+      <select id="severidadeRisco">
+        <option value="">Selecione</option>
+        <option value="1">1 - Leve</option>
+        <option value="2">2 - Baixa</option>
+        <option value="3">3 - Moderada</option>
+        <option value="4">4 - Grave</option>
+        <option value="5">5 - Crítica</option>
+      </select>
+    </label>
+  </div>
+
+  <button class="botao-secundario" onclick="adicionarRisco()">
+    Adicionar risco ao inventário
+  </button>
+
+  <button class="botao-secundario" onclick="adicionarInventarioAoDocumentoBase()">
+    Adicionar Inventário ao Documento Base
+  </button>
+
+  <button class="botao-secundario" onclick="imprimirTabela('tabelaInventario', 'Inventário de Riscos')">
+    Imprimir / Salvar PDF
+  </button>
+
+  <div class="tabela-container">
+    <table id="tabelaInventario">
+      <thead>
+        <tr>
+          <th>GES/GHE</th>
+          <th>Setor</th>
+          <th>Cargo/Função</th>
+          <th>Atividade</th>
+          <th>Perigo/Fator de risco</th>
+          <th>Tipo</th>
+          <th>Agravos</th>
+          <th>Causas</th>
+          <th>Controles existentes</th>
+          <th>EPIs</th>
+          <th>População exposta</th>
+          <th>Exposição</th>
+          <th>Tipo avaliação</th>
+          <th>P</th>
+          <th>S</th>
+          <th>R</th>
+          <th>Classificação</th>
+          <th>Monitoramento</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+
+
+
+
+
+
+
 
     <section class="card" id="matriz-epi">
       <h2>Matriz de EPI</h2>

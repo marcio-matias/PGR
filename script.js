@@ -123,75 +123,113 @@ function adicionarGheAoDocumentoBase() {
 }
 
 function adicionarRisco() {
-  const ghe = document.getElementById("gheRisco").value;
+  const gesGhe = document.getElementById("gesGheRisco").value;
+  const setor = document.getElementById("setorRisco").value;
+  const funcao = document.getElementById("funcaoRisco").value;
+  const atividade = document.getElementById("atividadeRisco").value;
   const perigo = document.getElementById("perigoRisco").value;
+  const tipo = document.getElementById("tipoRisco").value;
   const agravos = document.getElementById("agravosRisco").value;
   const causas = document.getElementById("causasRisco").value;
   const controles = document.getElementById("controlesRisco").value;
+  const epis = document.getElementById("episRisco").value;
   const populacao = document.getElementById("populacaoRisco").value;
   const exposicao = document.getElementById("exposicaoRisco").value;
   const tipoAvaliacao = document.getElementById("tipoAvaliacaoRisco").value;
-  const p = Number(document.getElementById("probabilidadeRisco").value);
-  const s = Number(document.getElementById("severidadeRisco").value);
-  const r = p * s;
-  const classificacao = classificarRisco(r);
-  const monitoramento = definirMonitoramento(classificacao);
+  const probabilidade = Number(document.getElementById("probabilidadeRisco").value);
+  const severidade = Number(document.getElementById("severidadeRisco").value);
 
-  if (!ghe || !perigo || !p || !s) {
-    alert("Preencha pelo menos GES/GHE, perigo, probabilidade e severidade.");
+  if (!gesGhe || !funcao || !atividade || !perigo || !tipo || !probabilidade || !severidade) {
+    alert("Preencha pelo menos GES/GHE, função, atividade, perigo, tipo, probabilidade e severidade.");
     return;
   }
+
+  const risco = probabilidade * severidade;
+  const classificacao = classificarRisco(risco);
+  const monitoramento = definirMonitoramento(classificacao);
 
   const tabela = document.querySelector("#tabelaInventario tbody");
   const linha = tabela.insertRow();
 
   linha.innerHTML = `
-    <td>${ghe}</td>
+    <td>${gesGhe}</td>
+    <td>${setor}</td>
+    <td>${funcao}</td>
+    <td>${atividade}</td>
     <td>${perigo}</td>
+    <td>${tipo}</td>
     <td>${agravos}</td>
     <td>${causas}</td>
     <td>${controles}</td>
+    <td>${epis}</td>
     <td>${populacao}</td>
     <td>${exposicao}</td>
     <td>${tipoAvaliacao}</td>
-    <td>${p}</td>
-    <td>${s}</td>
-    <td>${r}</td>
+    <td>${probabilidade}</td>
+    <td>${severidade}</td>
+    <td>${risco}</td>
     <td>${classificacao}</td>
     <td>${monitoramento}</td>
     <td>
-      <button onclick="criarAcao('${perigo}', '${ghe}')">Criar ação</button>
-      <button onclick="criarTreinamento('${perigo}', '${ghe}')">Criar treinamento</button>
+      <button onclick="criarAcao('${perigo}', '${gesGhe}')">Criar ação</button>
+      <button onclick="criarTreinamento('${perigo}', '${gesGhe}')">Criar treinamento</button>
     </td>
   `;
+
+  limparCamposInventario();
 }
 
-function classificarRisco(r) {
-  if (r <= 4) return "Baixo";
-  if (r <= 9) return "Médio";
-  if (r <= 16) return "Alto";
+function classificarRisco(risco) {
+  if (risco <= 4) {
+    return "Baixo";
+  }
+
+  if (risco <= 9) {
+    return "Médio";
+  }
+
+  if (risco <= 16) {
+    return "Alto";
+  }
+
   return "Crítico";
 }
 
 function definirMonitoramento(classificacao) {
-  if (classificacao === "Baixo") return "Manter controles existentes";
-  if (classificacao === "Médio") return "Monitorar periodicamente";
-  if (classificacao === "Alto") return "Implantar ações de controle";
+  if (classificacao === "Baixo") {
+    return "Manter controles existentes";
+  }
+
+  if (classificacao === "Médio") {
+    return "Monitorar periodicamente";
+  }
+
+  if (classificacao === "Alto") {
+    return "Implantar ações de controle";
+  }
+
   return "Ação imediata necessária";
 }
 
-function criarAcao(perigo, ghe) {
-  const tabela = document.querySelector("#tabelaPlanoAcao tbody");
-  const linha = tabela.insertRow();
-
-  linha.innerHTML = `
-    <td>${ghe} - ${perigo}</td>
-    <td contenteditable="true">Definir medida de controle para ${perigo}</td>
-    <td contenteditable="true">Responsável</td>
-    <td contenteditable="true">__/__/____</td>
-    <td contenteditable="true">Pendente</td>
-  `;
+function limparCamposInventario() {
+  document.getElementById("gesGheRisco").value = "";
+  document.getElementById("setorRisco").value = "";
+  document.getElementById("funcaoRisco").value = "";
+  document.getElementById("atividadeRisco").value = "";
+  document.getElementById("perigoRisco").value = "";
+  document.getElementById("tipoRisco").value = "";
+  document.getElementById("agravosRisco").value = "";
+  document.getElementById("causasRisco").value = "";
+  document.getElementById("controlesRisco").value = "";
+  document.getElementById("episRisco").value = "";
+  document.getElementById("populacaoRisco").value = "";
+  document.getElementById("exposicaoRisco").value = "";
+  document.getElementById("tipoAvaliacaoRisco").value = "";
+  document.getElementById("probabilidadeRisco").value = "";
+  document.getElementById("severidadeRisco").value = "";
 }
+
+
 
 function criarTreinamento(perigo, ghe) {
   const tabela = document.querySelector("#tabelaPlanoTreinamento tbody");
