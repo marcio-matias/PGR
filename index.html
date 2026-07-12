@@ -8,535 +8,553 @@
 </head>
 <body>
 
-  <header class="topo">
-    <h1>PGR</h1>
-    <p>Programa de Gerenciamento de Riscos</p>
-  </header>
-
-  <nav class="menu">
-    <button onclick="mostrarSecao('historico')">Histórico</button>
-    <button onclick="mostrarSecao('contratante')">Contratante</button>
-    <button onclick="mostrarSecao('contratada')">Contratada</button>
-    <button onclick="mostrarSecao('dados-pgr')">Dados do PGR</button>
-    <button onclick="mostrarSecao('texto-base')">Texto Base</button>
-    <button onclick="mostrarSecao('ges-ghe')">GES/GHE</button>
-    <button onclick="mostrarSecao('inventario')">Inventário</button>
-    <button onclick="mostrarSecao('matriz-epi')">Matriz de EPI</button>
-    <button onclick="mostrarSecao('plano-acao')">Plano de Ação</button>
-    <button onclick="mostrarSecao('plano-treinamento')">Plano de Treinamento</button>
-    <button onclick="mostrarSecao('documento-base')">Documento Base</button>
-  </nav>
-
-  <main class="container">
-
-    <section class="card ativo" id="historico">
-      <h2>Histórico de Revisões</h2>
-
-      <table id="tabelaHistorico">
-        <thead>
-          <tr>
-            <th>Revisão</th>
-            <th>Data</th>
-            <th>Descrição da alteração</th>
-            <th>Responsável</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>00</td>
-            <td>__/__/____</td>
-            <td>Emissão inicial do PGR</td>
-            <td>____________________</td>
-          </tr>
-          <tr>
-            <td>01</td>
-            <td>__/__/____</td>
-            <td>Revisão do inventário de riscos</td>
-            <td>____________________</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <button class="botao-secundario" onclick="adicionarHistoricoAoDocumentoBase()">
-        Adicionar Histórico ao Documento Base
-      </button>
-    </section>
-
-    <section class="card" id="contratante">
-      <h2>Empresa Contratante</h2>
-
-      <div class="grid">
-        <label>Razão social
-          <input type="text" id="contratanteRazao">
-        </label>
-
-        <label>Nome fantasia
-          <input type="text" id="contratanteFantasia">
-        </label>
-
-        <label>CNPJ
-          <input type="text" id="contratanteCnpj">
-        </label>
-
-        <label>Inscrição estadual
-          <input type="text" id="contratanteIe">
-        </label>
-
-        <label>Inscrição municipal
-          <input type="text" id="contratanteIm">
-        </label>
-
-        <label>Endereço
-          <input type="text" id="contratanteEndereco">
-        </label>
-
-        <label>Cidade
-          <input type="text" id="contratanteCidade">
-        </label>
-
-        <label>UF
-          <input type="text" id="contratanteUf">
-        </label>
-
-        <label>Área de abrangência
-          <input type="text" id="contratanteArea">
-        </label>
-
-        <label>Gerência
-          <input type="text" id="contratanteGerencia">
-        </label>
-
-        <label>Nome do fiscal
-          <input type="text" id="contratanteFiscal">
-        </label>
-
-        <label>Chave do fiscal
-          <input type="text" id="contratanteChaveFiscal">
-        </label>
-      </div>
-
-      <button class="botao-secundario" onclick="adicionarContratanteAoDocumentoBase()">
-        Adicionar Contratante ao Documento Base
-      </button>
-    </section>
-
-    <section class="card" id="contratada">
-      <h2>Empresa Contratada</h2>
-
-      <div class="grid">
-        <label>Razão social
-          <input type="text" id="contratadaRazao">
-        </label>
-
-        <label>Nome fantasia
-          <input type="text" id="contratadaFantasia">
-        </label>
-
-        <label>CNPJ
-          <input type="text" id="contratadaCnpj">
-        </label>
-
-        <label>Inscrição estadual
-          <input type="text" id="contratadaIe">
-        </label>
-
-        <label>Inscrição municipal
-          <input type="text" id="contratadaIm">
-        </label>
-
-        <label>Endereço
-          <input type="text" id="contratadaEndereco">
-        </label>
-
-        <label>Cidade
-          <input type="text" id="contratadaCidade">
-        </label>
-
-        <label>UF
-          <input type="text" id="contratadaUf">
-        </label>
-
-        <label>Responsável
-          <input type="text" id="contratadaResponsavel">
-        </label>
-
-        <label>Telefone
-          <input type="text" id="contratadaTelefone">
-        </label>
-
-        <label>E-mail
-          <input type="email" id="contratadaEmail">
-        </label>
-      </div>
-
-      <button class="botao-secundario" onclick="adicionarContratadaAoDocumentoBase()">
-        Adicionar Contratada ao Documento Base
-      </button>
-    </section>
-
-    <section class="card" id="dados-pgr">
-      <h2>Dados do PGR</h2>
-
-      <div class="grid">
-        <label>Unidade/local
-          <input type="text" id="pgrUnidade">
-        </label>
-
-        <label>Responsável pelo PGR
-          <input type="text" id="pgrResponsavel">
-        </label>
-
-        <label>Data de elaboração
-          <input type="date" id="pgrData">
-        </label>
-
-        <label>Descrição/escopo
-          <input type="text" id="pgrDescricao">
-        </label>
-      </div>
-
-      <button class="botao-secundario" onclick="adicionarDadosPgrAoDocumentoBase()">
-        Adicionar Dados do PGR ao Documento Base
-      </button>
-    </section>
-
-    <section class="card" id="texto-base">
-      <h2>Texto Base</h2>
-
-      <p>
-        Este Programa de Gerenciamento de Riscos - PGR tem como objetivo identificar,
-        avaliar e controlar os riscos ocupacionais relacionados às atividades desenvolvidas,
-        visando à preservação da saúde e da segurança dos trabalhadores.
-      </p>
-
-      <p>
-        O PGR contempla as informações das empresas, áreas de abrangência, funções,
-        atividades, perigos, riscos ocupacionais, medidas de controle, equipamentos de
-        proteção individual e plano de ação.
-      </p>
-
-      <button class="botao-secundario" onclick="adicionarTextoBaseAoDocumentoBase()">
-        Adicionar Texto Base ao Documento Base
-      </button>
-    </section>
-
-    <section class="card" id="ges-ghe">
-      <h2>GES/GHE</h2>
-
-      <div class="grid">
-        <label>GES/GHE
-          <input type="text" id="codigoGhe" placeholder="Ex.: GHE-01">
-        </label>
-
-        <label>Setor
-          <input type="text" id="setorGhe" placeholder="Ex.: Operacional">
-        </label>
-
-        <label>Cargo/Função
-          <input type="text" id="cargoGhe" placeholder="Ex.: Agente Controlador de Pragas">
-        </label>
-
-        <label>Atividades Exercidas
-          <textarea id="atividadesGhe" placeholder="Descreva as atividades exercidas"></textarea>
-        </label>
-      </div>
-
-      <button class="botao-secundario" onclick="adicionarGhe()">
-        Cadastrar GES/GHE
-      </button>
-
-      <button class="botao-secundario" onclick="adicionarGheAoDocumentoBase()">
-        Adicionar ao Documento Base
-      </button>
-
-      <button class="botao-secundario" onclick="imprimirTabela('tabelaGhe', 'GES/GHE')">
-        Imprimir / Salvar PDF
-      </button>
-
-      <div class="tabela-container">
-        <table id="tabelaGhe">
-          <thead>
-            <tr>
-              <th>GES/GHE</th>
-              <th>Setor</th>
-              <th>Cargo/Função</th>
-              <th>Atividades Exercidas</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card" id="inventario">
-  <h2>Inventário de Riscos</h2>
-
-  <div class="grid">
-    <label>GES/GHE
-      <input type="text" id="gesGheRisco" placeholder="Ex.: GHE-01 - Operacional">
-    </label>
-
-    <label>Setor
-      <input type="text" id="setorRisco" placeholder="Ex.: Operacional">
-    </label>
-
-    <label>Cargo/Função
-      <input type="text" id="funcaoRisco" placeholder="Ex.: Soldador">
-    </label>
-
-    <label>Atividade
-      <input type="text" id="atividadeRisco" placeholder="Ex.: Soldagem de estruturas metálicas">
-    </label>
-
-    <label>Perigo / Fator de risco
-      <input type="text" id="perigoRisco" placeholder="Ex.: Fumos metálicos">
-    </label>
-
-    <label>Tipo de risco
-      <select id="tipoRisco">
-        <option value="">Selecione</option>
-        <option value="Físico">Físico</option>
-        <option value="Químico">Químico</option>
-        <option value="Biológico">Biológico</option>
-        <option value="Ergonômico">Ergonômico</option>
-        <option value="Acidente">Acidente</option>
-      </select>
-    </label>
-
-    <label>Agravos / Possíveis danos
-      <input type="text" id="agravosRisco" placeholder="Ex.: Irritação respiratória, doença pulmonar">
-    </label>
-
-    <label>Causas
-      <input type="text" id="causasRisco" placeholder="Ex.: Processo de soldagem">
-    </label>
-
-    <label>Controles existentes
-      <input type="text" id="controlesRisco" placeholder="Ex.: Ventilação, máscara PFF2">
-    </label>
-
-    <label>EPIs recomendados
-      <input type="text" id="episRisco" placeholder="Ex.: Máscara PFF2, luva de raspa">
-    </label>
-
-    <label>População exposta
-      <input type="text" id="populacaoRisco" placeholder="Ex.: Soldadores">
-    </label>
-
-    <label>Exposição
-      <select id="exposicaoRisco">
-        <option value="">Selecione</option>
-        <option value="Eventual">Eventual</option>
-        <option value="Intermitente">Intermitente</option>
-        <option value="Habitual">Habitual</option>
-        <option value="Permanente">Permanente</option>
-      </select>
-    </label>
-
-    <label>Tipo de avaliação
-      <select id="tipoAvaliacaoRisco">
-        <option value="">Selecione</option>
-        <option value="Qualitativa">Qualitativa</option>
-        <option value="Quantitativa">Quantitativa</option>
-      </select>
-    </label>
-
-    <label>Probabilidade (P)
-      <select id="probabilidadeRisco">
-        <option value="">Selecione</option>
-        <option value="1">1 - Baixa</option>
-        <option value="2">2 - Pequena</option>
-        <option value="3">3 - Moderada</option>
-        <option value="4">4 - Alta</option>
-        <option value="5">5 - Muito alta</option>
-      </select>
-    </label>
-
-    <label>Severidade (S)
-      <select id="severidadeRisco">
-        <option value="">Selecione</option>
-        <option value="1">1 - Leve</option>
-        <option value="2">2 - Baixa</option>
-        <option value="3">3 - Moderada</option>
-        <option value="4">4 - Grave</option>
-        <option value="5">5 - Crítica</option>
-      </select>
-    </label>
-  </div>
-
-  <button class="botao-secundario" onclick="adicionarRisco()">
-    Adicionar risco ao inventário
-  </button>
-
-  <button class="botao-secundario" onclick="adicionarInventarioAoDocumentoBase()">
-    Adicionar Inventário ao Documento Base
-  </button>
-
-  <button class="botao-secundario" onclick="imprimirTabela('tabelaInventario', 'Inventário de Riscos')">
-    Imprimir / Salvar PDF
-  </button>
-
-  <div class="tabela-container">
-    <table id="tabelaInventario">
+<header class="topo">
+  <h1>PGR</h1>
+  <p>Programa de Gerenciamento de Riscos</p>
+</header>
+
+<nav class="menu">
+  <button onclick="mostrarSecao('historico')">Histórico</button>
+  <button onclick="mostrarSecao('contratante')">Contratante</button>
+  <button onclick="mostrarSecao('contratada')">Contratada</button>
+  <button onclick="mostrarSecao('dados-pgr')">Dados do PGR</button>
+  <button onclick="mostrarSecao('texto-base')">Texto Base</button>
+  <button onclick="mostrarSecao('ges-ghe')">GES/GHE</button>
+  <button onclick="mostrarSecao('inventario')">Inventário</button>
+  <button onclick="mostrarSecao('matriz-epi')">Matriz de EPI</button>
+  <button onclick="mostrarSecao('plano-acao')">Plano de Ação</button>
+  <button onclick="mostrarSecao('plano-treinamento')">Plano de Treinamento</button>
+  <button onclick="mostrarSecao('documento-base')">Documento Base</button>
+</nav>
+
+<main class="container">
+
+  <section class="card ativo" id="historico">
+    <h2>Histórico de Revisões</h2>
+
+    <table id="tabelaHistorico">
       <thead>
         <tr>
-          <th>GES/GHE</th>
-          <th>Setor</th>
-          <th>Cargo/Função</th>
-          <th>Atividade</th>
-          <th>Perigo/Fator de risco</th>
-          <th>Tipo</th>
-          <th>Agravos</th>
-          <th>Causas</th>
-          <th>Controles existentes</th>
-          <th>EPIs</th>
-          <th>População exposta</th>
-          <th>Exposição</th>
-          <th>Tipo avaliação</th>
-          <th>P</th>
-          <th>S</th>
-          <th>R</th>
-          <th>Classificação</th>
-          <th>Monitoramento</th>
-          <th>Ações</th>
+          <th>Revisão</th>
+          <th>Data</th>
+          <th>Descrição da alteração</th>
+          <th>Responsável</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        <tr>
+          <td>00</td>
+          <td>__/__/____</td>
+          <td>Emissão inicial do PGR</td>
+          <td>____________________</td>
+        </tr>
+        <tr>
+          <td>01</td>
+          <td>__/__/____</td>
+          <td>Revisão do inventário de riscos</td>
+          <td>____________________</td>
+        </tr>
+      </tbody>
     </table>
-  </div>
-</section>
 
+    <button class="botao-secundario" onclick="adicionarHistoricoAoDocumentoBase()">
+      Adicionar Histórico ao Documento Base
+    </button>
+  </section>
 
+  <section class="card" id="contratante">
+    <h2>Empresa Contratante</h2>
 
+    <div class="grid">
+      <label>Razão social
+        <input type="text" id="contratanteRazao">
+      </label>
 
+      <label>Nome fantasia
+        <input type="text" id="contratanteFantasia">
+      </label>
 
+      <label>CNPJ
+        <input type="text" id="contratanteCnpj">
+      </label>
 
+      <label>Inscrição estadual
+        <input type="text" id="contratanteIe">
+      </label>
 
+      <label>Inscrição municipal
+        <input type="text" id="contratanteIm">
+      </label>
 
+      <label>Endereço
+        <input type="text" id="contratanteEndereco">
+      </label>
 
-    <section class="card" id="matriz-epi">
-      <h2>Matriz de EPI</h2>
+      <label>Cidade
+        <input type="text" id="contratanteCidade">
+      </label>
 
-      <div class="grid">
-        <label>GHE
-          <input type="text" id="gheEpi" placeholder="Ex.: GHE-01">
-        </label>
+      <label>UF
+        <input type="text" id="contratanteUf">
+      </label>
 
-        <label>Tipo de EPI
-          <input type="text" id="tipoEpi" placeholder="Ex.: Botina de Segurança">
-        </label>
+      <label>Área de abrangência
+        <input type="text" id="contratanteArea">
+      </label>
 
-        <label>Descrição do EPI
-          <input type="text" id="descricaoEpi" placeholder="Ex.: Botina de segurança com biqueira">
-        </label>
+      <label>Gerência
+        <input type="text" id="contratanteGerencia">
+      </label>
 
-        <label>CA
-          <input type="text" id="caEpi" placeholder="Ex.: 28474">
-        </label>
+      <label>Nome do fiscal
+        <input type="text" id="contratanteFiscal">
+      </label>
 
-        <label>Validade do CA
-          <input type="date" id="validadeCaEpi">
-        </label>
+      <label>Chave do fiscal
+        <input type="text" id="contratanteChaveFiscal">
+      </label>
+    </div>
 
-        <label>Periodicidade de Troca
-          <input type="text" id="periodicidadeEpi" placeholder="Ex.: A cada 6 meses ou conforme desgaste">
-        </label>
+    <button class="botao-secundario" onclick="adicionarContratanteAoDocumentoBase()">
+      Adicionar Contratante ao Documento Base
+    </button>
+  </section>
+
+  <section class="card" id="contratada">
+    <h2>Empresa Contratada</h2>
+
+    <div class="grid">
+      <label>Razão social
+        <input type="text" id="contratadaRazao">
+      </label>
+
+      <label>Nome fantasia
+        <input type="text" id="contratadaFantasia">
+      </label>
+
+      <label>CNPJ
+        <input type="text" id="contratadaCnpj">
+      </label>
+
+      <label>Inscrição estadual
+        <input type="text" id="contratadaIe">
+      </label>
+
+      <label>Inscrição municipal
+        <input type="text" id="contratadaIm">
+      </label>
+
+      <label>Endereço
+        <input type="text" id="contratadaEndereco">
+      </label>
+
+      <label>Cidade
+        <input type="text" id="contratadaCidade">
+      </label>
+
+      <label>UF
+        <input type="text" id="contratadaUf">
+      </label>
+
+      <label>Responsável
+        <input type="text" id="contratadaResponsavel">
+      </label>
+
+      <label>Telefone
+        <input type="text" id="contratadaTelefone">
+      </label>
+
+      <label>E-mail
+        <input type="email" id="contratadaEmail">
+      </label>
+    </div>
+
+    <button class="botao-secundario" onclick="adicionarContratadaAoDocumentoBase()">
+      Adicionar Contratada ao Documento Base
+    </button>
+  </section>
+
+  <section class="card" id="dados-pgr">
+    <h2>Dados do PGR</h2>
+
+    <div class="grid">
+      <label>Unidade/local
+        <input type="text" id="pgrUnidade">
+      </label>
+
+      <label>Responsável pelo PGR
+        <input type="text" id="pgrResponsavel">
+      </label>
+
+      <label>Data de elaboração
+        <input type="date" id="pgrData">
+      </label>
+
+      <label>Descrição/escopo
+        <input type="text" id="pgrDescricao">
+      </label>
+    </div>
+
+    <button class="botao-secundario" onclick="adicionarDadosPgrAoDocumentoBase()">
+      Adicionar Dados do PGR ao Documento Base
+    </button>
+  </section>
+
+  <section class="card" id="texto-base">
+    <h2>Texto Base</h2>
+
+    <label>Texto base do PGR
+      <textarea id="textoBasePgr">Este Programa de Gerenciamento de Riscos - PGR tem como objetivo identificar, avaliar e controlar os riscos ocupacionais relacionados às atividades desenvolvidas, visando à preservação da saúde e da segurança dos trabalhadores.
+
+O PGR contempla as informações das empresas, áreas de abrangência, funções, atividades, perigos, riscos ocupacionais, medidas de controle, equipamentos de proteção individual e plano de ação.</textarea>
+    </label>
+
+    <button class="botao-secundario" onclick="adicionarTextoBaseAoDocumentoBase()">
+      Adicionar Texto Base ao Documento Base
+    </button>
+  </section>
+
+  <section class="card" id="ges-ghe">
+    <h2>GES/GHE</h2>
+
+    <div class="grid">
+      <label>GES/GHE
+        <input type="text" id="codigoGhe" placeholder="Ex.: GHE-01">
+      </label>
+
+      <label>Setor
+        <input type="text" id="setorGhe" placeholder="Ex.: Operacional">
+      </label>
+
+      <label>Cargo/Função
+        <input type="text" id="cargoGhe" placeholder="Ex.: Pintor industrial">
+      </label>
+
+      <label>Atividades exercidas
+        <textarea id="atividadesGhe" placeholder="Descreva as atividades exercidas"></textarea>
+      </label>
+
+      <label>Riscos possíveis do GES/GHE
+        <textarea id="riscosPossiveisGhe" placeholder="Ex.: Trabalho em altura; agentes químicos presentes em tintas, solventes e diluentes; radiação solar; esforço físico e posturas inadequadas"></textarea>
+      </label>
+    </div>
+
+    <div class="quadro-riscos">
+      <h3>Possibilidades de riscos por categoria</h3>
+
+      <div class="botoes-riscos">
+        <button type="button" onclick="listarPossibilidadesRisco('fisico')">Físico</button>
+        <button type="button" onclick="listarPossibilidadesRisco('quimico')">Químico</button>
+        <button type="button" onclick="listarPossibilidadesRisco('biologico')">Biológico</button>
+        <button type="button" onclick="listarPossibilidadesRisco('ergonomico')">Ergonômico</button>
+        <button type="button" onclick="listarPossibilidadesRisco('psicossocial')">Psicossocial</button>
+        <button type="button" onclick="listarPossibilidadesRisco('acidente')">Acidente</button>
       </div>
 
-      <button class="botao-secundario" onclick="adicionarEpiMatriz()">
-        Cadastrar EPI
-      </button>
-
-      <button class="botao-secundario" onclick="adicionarMatrizEpiAoDocumentoBase()">
-        Adicionar ao Documento Base
-      </button>
-
-      <button class="botao-secundario" onclick="imprimirTabela('tabelaMatrizEpi', 'Matriz de EPI')">
-        Imprimir / Salvar PDF
-      </button>
-
-      <div class="tabela-container">
-        <table id="tabelaMatrizEpi">
-          <thead>
-            <tr>
-              <th>GHE</th>
-              <th>Tipo de EPI</th>
-              <th>Descrição do EPI</th>
-              <th>CA</th>
-              <th>Validade do CA</th>
-              <th>Periodicidade de Troca</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div id="listaPossibilidadesRisco" class="lista-possibilidades">
+        <p>Selecione uma categoria para listar os riscos possíveis.</p>
       </div>
+    </div>
+
+    <button class="botao-secundario" onclick="adicionarGhe()">
+      Cadastrar GES/GHE
+    </button>
+
+    <button class="botao-secundario" onclick="adicionarGheAoDocumentoBase()">
+      Adicionar ao Documento Base
+    </button>
+
+    <button class="botao-secundario" onclick="imprimirTabela('tabelaGhe', 'GES/GHE')">
+      Imprimir / Salvar PDF
+    </button>
+
+    <div class="tabela-container">
+      <table id="tabelaGhe">
+        <thead>
+          <tr>
+            <th>GES/GHE</th>
+            <th>Setor</th>
+            <th>Cargo/Função</th>
+            <th>Atividades exercidas</th>
+            <th>Riscos possíveis</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="inventario">
+    <h2>Inventário de Riscos Ocupacionais</h2>
+
+    <div class="grid">
+      <label>Processo / Ambiente de trabalho
+        <textarea id="processoAmbienteRisco" placeholder="Ex.: Área externa de torre de telecomunicação, com atividade em estrutura metálica"></textarea>
+      </label>
+
+      <label>Caracterização da atividade
+        <textarea id="atividadeRisco" placeholder="Ex.: Preparação da superfície e pintura da estrutura metálica da torre de telecomunicação"></textarea>
+      </label>
+
+      <label>Perigo / Fator de risco
+        <textarea id="perigoRisco" placeholder="Ex.: Solventes e diluentes; radiação solar; esforço físico e posturas inadequadas"></textarea>
+      </label>
+
+      <label>Fonte / Circunstância
+        <textarea id="fonteCircunstanciaRisco" placeholder="Ex.: Manipulação, mistura e aplicação de tintas; evaporação de solventes durante a pintura"></textarea>
+      </label>
+
+      <label>Possíveis lesões ou agravos à saúde
+        <textarea id="agravosRisco" placeholder="Ex.: Irritação da pele, olhos e vias respiratórias, dermatite de contato, intoxicação"></textarea>
+      </label>
+
+      <label>Grupo de trabalhadores expostos
+        <input type="text" id="grupoExpostoRisco" placeholder="Ex.: Pintores, ajudantes e trabalhadores próximos">
+      </label>
+
+      <label>GES/GHE
+        <input type="text" id="gesGheRisco" placeholder="Ex.: GHE-01 - Operacional">
+      </label>
+
+      <label>Medidas de prevenção implementadas
+        <textarea id="medidasPrevencaoRisco" placeholder="Ex.: Ventilação, uso de respirador, luvas químicas, óculos de proteção, treinamento e FISPQ disponível"></textarea>
+      </label>
+
+      <label>Forma de exposição
+        <select id="formaExposicaoRisco">
+          <option value="">Selecione</option>
+          <option value="Eventual">Eventual</option>
+          <option value="Intermitente">Intermitente</option>
+          <option value="Habitual">Habitual</option>
+          <option value="Permanente">Permanente</option>
+        </select>
+      </label>
+
+      <label>Frequência da exposição
+        <input type="text" id="frequenciaExposicaoRisco" placeholder="Ex.: diária, semanal, mensal, eventual">
+      </label>
+
+      <label>Duração da exposição
+        <input type="text" id="duracaoExposicaoRisco" placeholder="Ex.: 2 horas/dia, jornada inteira, 30 min/atividade">
+      </label>
+
+      <label>Intensidade / Concentração
+        <input type="text" id="intensidadeExposicaoRisco" placeholder="Ex.: NEN 87 dB(A), qualitativa, abaixo do limite">
+      </label>
+
+      <label>Observações da exposição
+        <textarea id="observacoesExposicaoRisco" placeholder="Detalhe como ocorre a exposição do trabalhador ao perigo"></textarea>
+      </label>
+
+      <label>Tipo de avaliação / Monitoramento
+        <select id="tipoAvaliacaoRisco">
+          <option value="">Selecione</option>
+          <option value="Análise preliminar">Análise preliminar</option>
+          <option value="Qualitativa">Qualitativa</option>
+          <option value="Quantitativa">Quantitativa</option>
+          <option value="Ergonômica - NR-17">Ergonômica - NR-17</option>
+        </select>
+      </label>
+
+      <label>Dados da avaliação / Resultado
+        <textarea id="resultadoAvaliacaoRisco" placeholder="Ex.: Avaliação qualitativa da exposição a agentes químicos presentes em tintas e solventes"></textarea>
+      </label>
+
+      <label>EPIs recomendados
+        <textarea id="episRisco" placeholder="Ex.: Respirador com filtro químico, luvas nitrílicas, óculos de segurança, vestimenta de proteção"></textarea>
+      </label>
+
+      <label>Probabilidade (P)
+        <select id="probabilidadeRisco">
+          <option value="">Selecione</option>
+          <option value="1">1 - Baixa</option>
+          <option value="2">2 - Pequena</option>
+          <option value="3">3 - Moderada</option>
+          <option value="4">4 - Alta</option>
+          <option value="5">5 - Muito alta</option>
+        </select>
+      </label>
+
+      <label>Severidade (S)
+        <select id="severidadeRisco">
+          <option value="">Selecione</option>
+          <option value="1">1 - Leve</option>
+          <option value="2">2 - Baixa</option>
+          <option value="3">3 - Moderada</option>
+          <option value="4">4 - Grave</option>
+          <option value="5">5 - Crítica</option>
+        </select>
+      </label>
+    </div>
+
+    <button class="botao-secundario" onclick="adicionarRisco()">
+      Adicionar risco ao inventário
+    </button>
+
+    <button class="botao-secundario" onclick="adicionarInventarioAoDocumentoBase()">
+      Adicionar ao Documento Base
+    </button>
+
+    <button class="botao-secundario" onclick="imprimirTabela('tabelaInventario', 'Inventário de Riscos Ocupacionais')">
+      Imprimir / Salvar PDF
+    </button>
+
+    <div class="tabela-container">
+      <table id="tabelaInventario">
+        <thead>
+          <tr>
+            <th>Processo/Ambiente</th>
+            <th>Atividade</th>
+            <th>Perigo/Fator de risco</th>
+            <th>Fonte/Circunstância</th>
+            <th>Lesões/Agravos</th>
+            <th>Grupo exposto</th>
+            <th>GES/GHE</th>
+            <th>Medidas de prevenção</th>
+            <th>Forma de exposição</th>
+            <th>Frequência</th>
+            <th>Duração</th>
+            <th>Intensidade/Concentração</th>
+            <th>Observações da exposição</th>
+            <th>Avaliação/Monitoramento</th>
+            <th>Resultado</th>
+            <th>EPIs</th>
+            <th>Probabilidade</th>
+            <th>Severidade</th>
+            <th>Nível do risco</th>
+            <th>Classificação</th>
+            <th>Prioridade de ação</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="matriz-epi">
+    <h2>Matriz de EPI</h2>
+
+    <div class="grid">
+      <label>GHE
+        <input type="text" id="gheEpi" placeholder="Ex.: GHE-01">
+      </label>
+
+      <label>Tipo de EPI
+        <input type="text" id="tipoEpi" placeholder="Ex.: Botina de Segurança">
+      </label>
+
+      <label>Descrição do EPI
+        <input type="text" id="descricaoEpi" placeholder="Ex.: Botina de segurança com biqueira">
+      </label>
+
+      <label>CA
+        <input type="text" id="caEpi" placeholder="Ex.: 28474">
+      </label>
+
+      <label>Validade do CA
+        <input type="date" id="validadeCaEpi">
+      </label>
+
+      <label>Periodicidade de Troca
+        <input type="text" id="periodicidadeEpi" placeholder="Ex.: A cada 6 meses ou conforme desgaste">
+      </label>
+    </div>
+
+    <button class="botao-secundario" onclick="adicionarEpiMatriz()">
+      Cadastrar EPI
+    </button>
+
+    <button class="botao-secundario" onclick="adicionarMatrizEpiAoDocumentoBase()">
+      Adicionar ao Documento Base
+    </button>
+
+    <button class="botao-secundario" onclick="imprimirTabela('tabelaMatrizEpi', 'Matriz de EPI')">
+      Imprimir / Salvar PDF
+    </button>
+
+    <div class="tabela-container">
+      <table id="tabelaMatrizEpi">
+        <thead>
+          <tr>
+            <th>GHE</th>
+            <th>Tipo de EPI</th>
+            <th>Descrição do EPI</th>
+            <th>CA</th>
+            <th>Validade do CA</th>
+            <th>Periodicidade de Troca</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="plano-acao">
+    <h2>Plano de Ação</h2>
+
+    <button class="botao-secundario" onclick="adicionarPlanoAcaoAoDocumentoBase()">
+      Adicionar Plano de Ação ao Documento Base
+    </button>
+
+    <div class="tabela-container">
+      <table id="tabelaPlanoAcao">
+        <thead>
+          <tr>
+            <th>Origem/Risco</th>
+            <th>Ação necessária</th>
+            <th>Responsável</th>
+            <th>Prazo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="plano-treinamento">
+    <h2>Plano de Treinamento</h2>
+
+    <button class="botao-secundario" onclick="adicionarPlanoTreinamentoAoDocumentoBase()">
+      Adicionar Plano de Treinamento ao Documento Base
+    </button>
+
+    <div class="tabela-container">
+      <table id="tabelaPlanoTreinamento">
+        <thead>
+          <tr>
+            <th>Origem/Risco</th>
+            <th>Treinamento recomendado</th>
+            <th>Público-alvo</th>
+            <th>Periodicidade</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="documento-base">
+    <h2>Documento Base</h2>
+
+    <p>
+      Esta seção representa o produto final do PGR. As informações cadastradas nos módulos anteriores
+      deverão ser consolidadas aqui para composição do documento.
+    </p>
+
+    <div id="conteudoDocumentoBase" class="documento-final">
+      <h3>PGR - Programa de Gerenciamento de Riscos</h3>
+    </div>
+
+    <section class="acoes">
+      <button onclick="window.print()">Imprimir / Salvar PDF</button>
     </section>
+  </section>
 
-    <section class="card" id="plano-acao">
-      <h2>Plano de Ação</h2>
+</main>
 
-      <button class="botao-secundario" onclick="adicionarPlanoAcaoAoDocumentoBase()">
-        Adicionar Plano de Ação ao Documento Base
-      </button>
-
-      <div class="tabela-container">
-        <table id="tabelaPlanoAcao">
-          <thead>
-            <tr>
-              <th>Origem/Risco</th>
-              <th>Ação necessária</th>
-              <th>Responsável</th>
-              <th>Prazo</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card" id="plano-treinamento">
-      <h2>Plano de Treinamento</h2>
-
-      <button class="botao-secundario" onclick="adicionarPlanoTreinamentoAoDocumentoBase()">
-        Adicionar Plano de Treinamento ao Documento Base
-      </button>
-
-      <div class="tabela-container">
-        <table id="tabelaPlanoTreinamento">
-          <thead>
-            <tr>
-              <th>Origem/Risco</th>
-              <th>Treinamento recomendado</th>
-              <th>Público-alvo</th>
-              <th>Periodicidade</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card" id="documento-base">
-      <h2>Documento Base</h2>
-
-      <p>
-        Esta seção representa o produto final do PGR. As informações cadastradas nos módulos anteriores
-        deverão ser consolidadas aqui para composição do documento.
-      </p>
-
-      <div id="conteudoDocumentoBase" class="documento-final">
-        <h3>PGR - Programa de Gerenciamento de Riscos</h3>
-      </div>
-
-      <section class="acoes">
-        <button onclick="window.print()">Imprimir / Salvar PDF</button>
-      </section>
-    </section>
-
-  </main>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

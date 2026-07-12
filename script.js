@@ -3,6 +3,34 @@ console.log("PGR iniciado com sucesso.");
 let listaGhe = [];
 let listaMatrizEpi = [];
 
+function pegarValor(id) {
+  const campo = document.getElementById(id);
+  return campo ? campo.value : "";
+}
+
+function limparCampo(id) {
+  const campo = document.getElementById(id);
+
+  if (campo) {
+    campo.value = "";
+  }
+}
+
+function textoSeguro(texto) {
+  return String(texto || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function atributoSeguro(texto) {
+  return String(texto || "")
+    .replaceAll("\\", "\\\\")
+    .replaceAll("'", "\\'")
+    .replaceAll('"', "&quot;")
+    .replaceAll("\n", " ");
+}
+
 function mostrarSecao(idSecao) {
   const secoes = document.querySelectorAll(".card");
 
@@ -10,11 +38,20 @@ function mostrarSecao(idSecao) {
     secao.classList.remove("ativo");
   });
 
-  document.getElementById(idSecao).classList.add("ativo");
+  const secaoSelecionada = document.getElementById(idSecao);
+
+  if (secaoSelecionada) {
+    secaoSelecionada.classList.add("ativo");
+  }
 }
 
 function adicionarAoDocumento(titulo, conteudo) {
   const documento = document.getElementById("conteudoDocumentoBase");
+
+  if (!documento) {
+    alert("Documento Base não encontrado.");
+    return;
+  }
 
   documento.innerHTML += `
     <hr>
@@ -24,26 +61,30 @@ function adicionarAoDocumento(titulo, conteudo) {
 }
 
 function adicionarHistoricoAoDocumentoBase() {
-  adicionarAoDocumento("Histórico de Revisões", document.getElementById("tabelaHistorico").outerHTML);
+  const tabela = document.getElementById("tabelaHistorico");
+
+  if (!tabela) {
+    alert("Tabela de histórico não encontrada.");
+    return;
+  }
+
+  adicionarAoDocumento("Histórico de Revisões", tabela.outerHTML);
   alert("Histórico adicionado ao Documento Base.");
 }
 
 function adicionarContratanteAoDocumentoBase() {
   const html = `
-    <p><strong>Razão social:</strong> ${document.getElementById("razaoContratante").value}</p>
-    <p><strong>Nome fantasia:</strong> ${document.getElementById("fantasiaContratante").value}</p>
-    <p><strong>CNPJ:</strong> ${document.getElementById("cnpjContratante").value}</p>
-    <p><strong>Inscrição estadual:</strong> ${document.getElementById("ieContratante").value}</p>
-    <p><strong>Inscrição municipal:</strong> ${document.getElementById("imContratante").value}</p>
-    <p><strong>Endereço:</strong> ${document.getElementById("enderecoContratante").value}</p>
-    <p><strong>Cidade/UF:</strong> ${document.getElementById("cidadeContratante").value}/${document.getElementById("ufContratante").value}</p>
-    <p><strong>Responsável:</strong> ${document.getElementById("responsavelContratante").value}</p>
-    <p><strong>Telefone:</strong> ${document.getElementById("telefoneContratante").value}</p>
-    <p><strong>E-mail:</strong> ${document.getElementById("emailContratante").value}</p>
-    <p><strong>Área de abrangência:</strong> ${document.getElementById("areaContratante").value}</p>
-    <p><strong>Nome do fiscal:</strong> ${document.getElementById("fiscalContratante").value}</p>
-    <p><strong>Chave do fiscal:</strong> ${document.getElementById("chaveFiscalContratante").value}</p>
-    <p><strong>Gerência:</strong> ${document.getElementById("gerenciaContratante").value}</p>
+    <p><strong>Razão social:</strong> ${textoSeguro(pegarValor("contratanteRazao"))}</p>
+    <p><strong>Nome fantasia:</strong> ${textoSeguro(pegarValor("contratanteFantasia"))}</p>
+    <p><strong>CNPJ:</strong> ${textoSeguro(pegarValor("contratanteCnpj"))}</p>
+    <p><strong>Inscrição estadual:</strong> ${textoSeguro(pegarValor("contratanteIe"))}</p>
+    <p><strong>Inscrição municipal:</strong> ${textoSeguro(pegarValor("contratanteIm"))}</p>
+    <p><strong>Endereço:</strong> ${textoSeguro(pegarValor("contratanteEndereco"))}</p>
+    <p><strong>Cidade/UF:</strong> ${textoSeguro(pegarValor("contratanteCidade"))}/${textoSeguro(pegarValor("contratanteUf"))}</p>
+    <p><strong>Área de abrangência:</strong> ${textoSeguro(pegarValor("contratanteArea"))}</p>
+    <p><strong>Gerência:</strong> ${textoSeguro(pegarValor("contratanteGerencia"))}</p>
+    <p><strong>Nome do fiscal:</strong> ${textoSeguro(pegarValor("contratanteFiscal"))}</p>
+    <p><strong>Chave do fiscal:</strong> ${textoSeguro(pegarValor("contratanteChaveFiscal"))}</p>
   `;
 
   adicionarAoDocumento("Empresa Contratante", html);
@@ -52,16 +93,16 @@ function adicionarContratanteAoDocumentoBase() {
 
 function adicionarContratadaAoDocumentoBase() {
   const html = `
-    <p><strong>Razão social:</strong> ${document.getElementById("razaoContratada").value}</p>
-    <p><strong>Nome fantasia:</strong> ${document.getElementById("fantasiaContratada").value}</p>
-    <p><strong>CNPJ:</strong> ${document.getElementById("cnpjContratada").value}</p>
-    <p><strong>Inscrição estadual:</strong> ${document.getElementById("ieContratada").value}</p>
-    <p><strong>Inscrição municipal:</strong> ${document.getElementById("imContratada").value}</p>
-    <p><strong>Endereço:</strong> ${document.getElementById("enderecoContratada").value}</p>
-    <p><strong>Cidade/UF:</strong> ${document.getElementById("cidadeContratada").value}/${document.getElementById("ufContratada").value}</p>
-    <p><strong>Responsável:</strong> ${document.getElementById("responsavelContratada").value}</p>
-    <p><strong>Telefone:</strong> ${document.getElementById("telefoneContratada").value}</p>
-    <p><strong>E-mail:</strong> ${document.getElementById("emailContratada").value}</p>
+    <p><strong>Razão social:</strong> ${textoSeguro(pegarValor("contratadaRazao"))}</p>
+    <p><strong>Nome fantasia:</strong> ${textoSeguro(pegarValor("contratadaFantasia"))}</p>
+    <p><strong>CNPJ:</strong> ${textoSeguro(pegarValor("contratadaCnpj"))}</p>
+    <p><strong>Inscrição estadual:</strong> ${textoSeguro(pegarValor("contratadaIe"))}</p>
+    <p><strong>Inscrição municipal:</strong> ${textoSeguro(pegarValor("contratadaIm"))}</p>
+    <p><strong>Endereço:</strong> ${textoSeguro(pegarValor("contratadaEndereco"))}</p>
+    <p><strong>Cidade/UF:</strong> ${textoSeguro(pegarValor("contratadaCidade"))}/${textoSeguro(pegarValor("contratadaUf"))}</p>
+    <p><strong>Responsável:</strong> ${textoSeguro(pegarValor("contratadaResponsavel"))}</p>
+    <p><strong>Telefone:</strong> ${textoSeguro(pegarValor("contratadaTelefone"))}</p>
+    <p><strong>E-mail:</strong> ${textoSeguro(pegarValor("contratadaEmail"))}</p>
   `;
 
   adicionarAoDocumento("Empresa Contratada", html);
@@ -70,12 +111,10 @@ function adicionarContratadaAoDocumentoBase() {
 
 function adicionarDadosPgrAoDocumentoBase() {
   const html = `
-    <p><strong>Contratante:</strong> ${document.getElementById("pgrContratante").value}</p>
-    <p><strong>Contratada:</strong> ${document.getElementById("pgrContratada").value}</p>
-    <p><strong>Unidade/local:</strong> ${document.getElementById("pgrUnidade").value}</p>
-    <p><strong>Responsável pelo PGR:</strong> ${document.getElementById("pgrResponsavel").value}</p>
-    <p><strong>Data de elaboração:</strong> ${document.getElementById("pgrData").value}</p>
-    <p><strong>Descrição/escopo:</strong> ${document.getElementById("pgrEscopo").value}</p>
+    <p><strong>Unidade/local:</strong> ${textoSeguro(pegarValor("pgrUnidade"))}</p>
+    <p><strong>Responsável pelo PGR:</strong> ${textoSeguro(pegarValor("pgrResponsavel"))}</p>
+    <p><strong>Data de elaboração:</strong> ${textoSeguro(pegarValor("pgrData"))}</p>
+    <p><strong>Descrição/escopo:</strong> ${textoSeguro(pegarValor("pgrDescricao"))}</p>
   `;
 
   adicionarAoDocumento("Dados do PGR", html);
@@ -83,96 +122,290 @@ function adicionarDadosPgrAoDocumentoBase() {
 }
 
 function adicionarTextoBaseAoDocumentoBase() {
-  const texto = document.getElementById("textoBasePgr").value;
-  adicionarAoDocumento("Texto Base do PGR", `<p>${texto}</p>`);
+  const texto = pegarValor("textoBasePgr");
+
+  adicionarAoDocumento("Texto Base do PGR", `<p>${textoSeguro(texto)}</p>`);
   alert("Texto base adicionado ao Documento Base.");
 }
 
 function adicionarGhe() {
-  const codigo = document.getElementById("codigoGhe").value;
-  const setor = document.getElementById("setorGhe").value;
-  const cargo = document.getElementById("cargoGhe").value;
-  const atividades = document.getElementById("atividadesGhe").value;
+  const codigo = pegarValor("codigoGhe");
+  const setor = pegarValor("setorGhe");
+  const cargo = pegarValor("cargoGhe");
+  const atividades = pegarValor("atividadesGhe");
+  const riscosPossiveis = pegarValor("riscosPossiveisGhe");
 
   if (!codigo || !setor || !cargo || !atividades) {
-    alert("Preencha todos os campos do GES/GHE.");
+    alert("Preencha GES/GHE, setor, cargo/função e atividades exercidas.");
     return;
   }
 
-  listaGhe.push({ codigo, setor, cargo, atividades });
+  listaGhe.push({
+    codigo,
+    setor,
+    cargo,
+    atividades,
+    riscosPossiveis
+  });
 
   const tabela = document.querySelector("#tabelaGhe tbody");
+
+  if (!tabela) {
+    alert("Tabela GES/GHE não encontrada.");
+    return;
+  }
+
   const linha = tabela.insertRow();
 
   linha.innerHTML = `
-    <td>${codigo}</td>
-    <td>${setor}</td>
-    <td>${cargo}</td>
-    <td>${atividades}</td>
+    <td>${textoSeguro(codigo)}</td>
+    <td>${textoSeguro(setor)}</td>
+    <td>${textoSeguro(cargo)}</td>
+    <td>${textoSeguro(atividades)}</td>
+    <td>${formatarListaRiscos(riscosPossiveis)}</td>
   `;
 
-  document.getElementById("codigoGhe").value = "";
-  document.getElementById("setorGhe").value = "";
-  document.getElementById("cargoGhe").value = "";
-  document.getElementById("atividadesGhe").value = "";
+  limparCamposGhe();
+}
+
+function formatarListaRiscos(texto) {
+  if (!texto) {
+    return "";
+  }
+
+  const riscos = texto
+    .split(";")
+    .map((risco) => risco.trim())
+    .filter((risco) => risco !== "");
+
+  if (riscos.length === 0) {
+    return textoSeguro(texto);
+  }
+
+  return `
+    <ul>
+      ${riscos.map((risco) => `<li>${textoSeguro(risco)}</li>`).join("")}
+    </ul>
+  `;
+}
+
+function limparCamposGhe() {
+  limparCampo("codigoGhe");
+  limparCampo("setorGhe");
+  limparCampo("cargoGhe");
+  limparCampo("atividadesGhe");
+  limparCampo("riscosPossiveisGhe");
 }
 
 function adicionarGheAoDocumentoBase() {
-  adicionarAoDocumento("GES/GHE", document.getElementById("tabelaGhe").outerHTML);
+  const tabela = document.getElementById("tabelaGhe");
+
+  if (!tabela) {
+    alert("Tabela GES/GHE não encontrada.");
+    return;
+  }
+
+  adicionarAoDocumento("GES/GHE", tabela.outerHTML);
   alert("GES/GHE adicionado ao Documento Base.");
 }
 
-function adicionarRisco() {
-  const gesGhe = document.getElementById("gesGheRisco").value;
-  const setor = document.getElementById("setorRisco").value;
-  const funcao = document.getElementById("funcaoRisco").value;
-  const atividade = document.getElementById("atividadeRisco").value;
-  const perigo = document.getElementById("perigoRisco").value;
-  const tipo = document.getElementById("tipoRisco").value;
-  const agravos = document.getElementById("agravosRisco").value;
-  const causas = document.getElementById("causasRisco").value;
-  const controles = document.getElementById("controlesRisco").value;
-  const epis = document.getElementById("episRisco").value;
-  const populacao = document.getElementById("populacaoRisco").value;
-  const exposicao = document.getElementById("exposicaoRisco").value;
-  const tipoAvaliacao = document.getElementById("tipoAvaliacaoRisco").value;
-  const probabilidade = Number(document.getElementById("probabilidadeRisco").value);
-  const severidade = Number(document.getElementById("severidadeRisco").value);
+const possibilidadesRiscos = {
+  fisico: [
+    "Ruído",
+    "Vibração",
+    "Calor",
+    "Frio",
+    "Radiação não ionizante",
+    "Radiação ionizante",
+    "Umidade",
+    "Pressões anormais"
+  ],
 
-  if (!gesGhe || !funcao || !atividade || !perigo || !tipo || !probabilidade || !severidade) {
-    alert("Preencha pelo menos GES/GHE, função, atividade, perigo, tipo, probabilidade e severidade.");
+  quimico: [
+    "Poeiras",
+    "Fumos metálicos",
+    "Névoas",
+    "Neblinas",
+    "Gases",
+    "Vapores",
+    "Produtos químicos",
+    "Solventes e diluentes",
+    "Tintas e vernizes"
+  ],
+
+  biologico: [
+    "Vírus",
+    "Bactérias",
+    "Fungos",
+    "Parasitas",
+    "Material biológico",
+    "Contato com animais peçonhentos",
+    "Esgoto ou resíduos contaminados"
+  ],
+
+  ergonomico: [
+    "Esforço físico intenso",
+    "Levantamento e transporte manual de carga",
+    "Postura inadequada",
+    "Movimentos repetitivos",
+    "Ritmo excessivo de trabalho",
+    "Trabalho em turno/noturno",
+    "Exigência de atenção constante"
+  ],
+
+  psicossocial: [
+    "Assédio moral",
+    "Assédio sexual",
+    "Conflitos interpessoais",
+    "Pressão excessiva por metas",
+    "Sobrecarga de trabalho",
+    "Jornada prolongada",
+    "Trabalho em turno ou noturno",
+    "Falta de autonomia",
+    "Comunicação deficiente",
+    "Violência no trabalho",
+    "Isolamento social",
+    "Exigência emocional intensa",
+    "Insegurança no emprego",
+    "Ritmo intenso de trabalho"
+  ],
+
+  acidente: [
+    "Trabalho em altura",
+    "Queda de mesmo nível",
+    "Queda de materiais",
+    "Choque elétrico",
+    "Corte e perfuração",
+    "Prensagem de membros",
+    "Atropelamento",
+    "Incêndio e explosão",
+    "Contato com máquinas e equipamentos",
+    "Animais peçonhentos"
+  ]
+};
+
+function listarPossibilidadesRisco(categoria) {
+  const lista = document.getElementById("listaPossibilidadesRisco");
+  const riscos = possibilidadesRiscos[categoria];
+
+  if (!lista || !riscos) {
+    return;
+  }
+
+  lista.innerHTML = riscos
+    .map((risco) => {
+      return `
+        <button type="button" class="risco-opcao" onclick="adicionarRiscoPossivelGhe('${atributoSeguro(risco)}')">
+          ${textoSeguro(risco)}
+        </button>
+      `;
+    })
+    .join("");
+}
+
+function adicionarRiscoPossivelGhe(risco) {
+  const campo = document.getElementById("riscosPossiveisGhe");
+
+  if (!campo) {
+    return;
+  }
+
+  const valorAtual = campo.value.trim();
+
+  if (valorAtual === "") {
+    campo.value = risco;
+    return;
+  }
+
+  const riscosExistentes = valorAtual
+    .split(";")
+    .map((item) => item.trim().toLowerCase());
+
+  if (riscosExistentes.includes(risco.toLowerCase())) {
+    alert("Esse risco já foi adicionado.");
+    return;
+  }
+
+  campo.value = `${valorAtual}; ${risco}`;
+}
+
+function adicionarRisco() {
+  const processoAmbiente = pegarValor("processoAmbienteRisco");
+  const atividade = pegarValor("atividadeRisco");
+  const perigo = pegarValor("perigoRisco");
+  const fonteCircunstancia = pegarValor("fonteCircunstanciaRisco");
+  const agravos = pegarValor("agravosRisco");
+  const grupoExposto = pegarValor("grupoExpostoRisco");
+  const gesGhe = pegarValor("gesGheRisco");
+  const medidasPrevencao = pegarValor("medidasPrevencaoRisco");
+  const formaExposicao = pegarValor("formaExposicaoRisco");
+  const frequenciaExposicao = pegarValor("frequenciaExposicaoRisco");
+  const duracaoExposicao = pegarValor("duracaoExposicaoRisco");
+  const intensidadeExposicao = pegarValor("intensidadeExposicaoRisco");
+  const observacoesExposicao = pegarValor("observacoesExposicaoRisco");
+  const tipoAvaliacao = pegarValor("tipoAvaliacaoRisco");
+  const resultadoAvaliacao = pegarValor("resultadoAvaliacaoRisco");
+  const epis = pegarValor("episRisco");
+  const probabilidade = Number(pegarValor("probabilidadeRisco"));
+  const severidade = Number(pegarValor("severidadeRisco"));
+
+  if (
+    !processoAmbiente ||
+    !atividade ||
+    !perigo ||
+    !fonteCircunstancia ||
+    !agravos ||
+    !grupoExposto ||
+    !medidasPrevencao ||
+    !formaExposicao ||
+    !frequenciaExposicao ||
+    !duracaoExposicao ||
+    !tipoAvaliacao ||
+    !probabilidade ||
+    !severidade
+  ) {
+    alert("Preencha os campos obrigatórios do inventário de riscos ocupacionais.");
     return;
   }
 
   const risco = probabilidade * severidade;
   const classificacao = classificarRisco(risco);
-  const monitoramento = definirMonitoramento(classificacao);
+  const prioridadeAcao = definirPrioridadeAcao(classificacao);
 
   const tabela = document.querySelector("#tabelaInventario tbody");
+
+  if (!tabela) {
+    alert("Tabela do inventário não encontrada.");
+    return;
+  }
+
   const linha = tabela.insertRow();
 
   linha.innerHTML = `
-    <td>${gesGhe}</td>
-    <td>${setor}</td>
-    <td>${funcao}</td>
-    <td>${atividade}</td>
-    <td>${perigo}</td>
-    <td>${tipo}</td>
-    <td>${agravos}</td>
-    <td>${causas}</td>
-    <td>${controles}</td>
-    <td>${epis}</td>
-    <td>${populacao}</td>
-    <td>${exposicao}</td>
-    <td>${tipoAvaliacao}</td>
+    <td>${textoSeguro(processoAmbiente)}</td>
+    <td>${textoSeguro(atividade)}</td>
+    <td>${textoSeguro(perigo)}</td>
+    <td>${textoSeguro(fonteCircunstancia)}</td>
+    <td>${textoSeguro(agravos)}</td>
+    <td>${textoSeguro(grupoExposto)}</td>
+    <td>${textoSeguro(gesGhe)}</td>
+    <td>${textoSeguro(medidasPrevencao)}</td>
+    <td>${textoSeguro(formaExposicao)}</td>
+    <td>${textoSeguro(frequenciaExposicao)}</td>
+    <td>${textoSeguro(duracaoExposicao)}</td>
+    <td>${textoSeguro(intensidadeExposicao)}</td>
+    <td>${textoSeguro(observacoesExposicao)}</td>
+    <td>${textoSeguro(tipoAvaliacao)}</td>
+    <td>${textoSeguro(resultadoAvaliacao)}</td>
+    <td>${textoSeguro(epis)}</td>
     <td>${probabilidade}</td>
     <td>${severidade}</td>
     <td>${risco}</td>
     <td>${classificacao}</td>
-    <td>${monitoramento}</td>
+    <td>${prioridadeAcao}</td>
     <td>
-      <button onclick="criarAcao('${perigo}', '${gesGhe}')">Criar ação</button>
-      <button onclick="criarTreinamento('${perigo}', '${gesGhe}')">Criar treinamento</button>
+      <button onclick="criarAcao('${atributoSeguro(perigo)}', '${atributoSeguro(grupoExposto)}')">Criar ação</button>
+      <button onclick="criarTreinamento('${atributoSeguro(perigo)}', '${atributoSeguro(grupoExposto)}')">Criar treinamento</button>
     </td>
   `;
 
@@ -195,102 +428,177 @@ function classificarRisco(risco) {
   return "Crítico";
 }
 
-function definirMonitoramento(classificacao) {
+function definirPrioridadeAcao(classificacao) {
   if (classificacao === "Baixo") {
-    return "Manter controles existentes";
+    return "Baixa - manter controles existentes";
   }
 
   if (classificacao === "Médio") {
-    return "Monitorar periodicamente";
+    return "Média - programar melhoria";
   }
 
   if (classificacao === "Alto") {
-    return "Implantar ações de controle";
+    return "Alta - implementar ação de controle";
   }
 
-  return "Ação imediata necessária";
+  return "Crítica - ação imediata";
 }
 
 function limparCamposInventario() {
-  document.getElementById("gesGheRisco").value = "";
-  document.getElementById("setorRisco").value = "";
-  document.getElementById("funcaoRisco").value = "";
-  document.getElementById("atividadeRisco").value = "";
-  document.getElementById("perigoRisco").value = "";
-  document.getElementById("tipoRisco").value = "";
-  document.getElementById("agravosRisco").value = "";
-  document.getElementById("causasRisco").value = "";
-  document.getElementById("controlesRisco").value = "";
-  document.getElementById("episRisco").value = "";
-  document.getElementById("populacaoRisco").value = "";
-  document.getElementById("exposicaoRisco").value = "";
-  document.getElementById("tipoAvaliacaoRisco").value = "";
-  document.getElementById("probabilidadeRisco").value = "";
-  document.getElementById("severidadeRisco").value = "";
+  limparCampo("processoAmbienteRisco");
+  limparCampo("atividadeRisco");
+  limparCampo("perigoRisco");
+  limparCampo("fonteCircunstanciaRisco");
+  limparCampo("agravosRisco");
+  limparCampo("grupoExpostoRisco");
+  limparCampo("gesGheRisco");
+  limparCampo("medidasPrevencaoRisco");
+  limparCampo("formaExposicaoRisco");
+  limparCampo("frequenciaExposicaoRisco");
+  limparCampo("duracaoExposicaoRisco");
+  limparCampo("intensidadeExposicaoRisco");
+  limparCampo("observacoesExposicaoRisco");
+  limparCampo("tipoAvaliacaoRisco");
+  limparCampo("resultadoAvaliacaoRisco");
+  limparCampo("episRisco");
+  limparCampo("probabilidadeRisco");
+  limparCampo("severidadeRisco");
 }
 
+function criarAcao(perigo, origem) {
+  const tabela = document.querySelector("#tabelaPlanoAcao tbody");
 
+  if (!tabela) {
+    alert("Tabela do Plano de Ação não encontrada.");
+    return;
+  }
 
-function criarTreinamento(perigo, ghe) {
-  const tabela = document.querySelector("#tabelaPlanoTreinamento tbody");
   const linha = tabela.insertRow();
 
   linha.innerHTML = `
-    <td>${ghe} - ${perigo}</td>
-    <td contenteditable="true">Treinamento relacionado ao risco: ${perigo}</td>
-    <td contenteditable="true">${ghe}</td>
+    <td>${textoSeguro(origem)} - ${textoSeguro(perigo)}</td>
+    <td contenteditable="true">Definir medida de controle para ${textoSeguro(perigo)}</td>
+    <td contenteditable="true">Responsável</td>
+    <td contenteditable="true">__/__/____</td>
+    <td contenteditable="true">Pendente</td>
+  `;
+}
+
+function criarTreinamento(perigo, origem) {
+  const tabela = document.querySelector("#tabelaPlanoTreinamento tbody");
+
+  if (!tabela) {
+    alert("Tabela do Plano de Treinamento não encontrada.");
+    return;
+  }
+
+  const linha = tabela.insertRow();
+
+  linha.innerHTML = `
+    <td>${textoSeguro(origem)} - ${textoSeguro(perigo)}</td>
+    <td contenteditable="true">Treinamento relacionado ao risco: ${textoSeguro(perigo)}</td>
+    <td contenteditable="true">${textoSeguro(origem)}</td>
     <td contenteditable="true">Anual</td>
     <td contenteditable="true">Pendente</td>
   `;
 }
 
 function adicionarInventarioAoDocumentoBase() {
-  adicionarAoDocumento("Inventário de Riscos", document.getElementById("tabelaInventario").outerHTML);
+  const tabela = document.getElementById("tabelaInventario");
+
+  if (!tabela) {
+    alert("Tabela do inventário não encontrada.");
+    return;
+  }
+
+  adicionarAoDocumento("Inventário de Riscos Ocupacionais", tabela.outerHTML);
   alert("Inventário adicionado ao Documento Base.");
 }
 
 function adicionarEpiMatriz() {
-  const ghe = document.getElementById("gheEpi").value;
-  const tipo = document.getElementById("tipoEpi").value;
-  const descricao = document.getElementById("descricaoEpi").value;
-  const ca = document.getElementById("caEpi").value;
-  const validadeCa = document.getElementById("validadeCaEpi").value;
-  const periodicidade = document.getElementById("periodicidadeEpi").value;
+  const ghe = pegarValor("gheEpi");
+  const tipo = pegarValor("tipoEpi");
+  const descricao = pegarValor("descricaoEpi");
+  const ca = pegarValor("caEpi");
+  const validadeCa = pegarValor("validadeCaEpi");
+  const periodicidade = pegarValor("periodicidadeEpi");
 
   if (!ghe || !tipo || !descricao || !ca) {
     alert("Preencha GHE, tipo de EPI, descrição do EPI e CA.");
     return;
   }
 
-  listaMatrizEpi.push({ ghe, tipo, descricao, ca, validadeCa, periodicidade });
+  listaMatrizEpi.push({
+    ghe,
+    tipo,
+    descricao,
+    ca,
+    validadeCa,
+    periodicidade
+  });
 
   const tabela = document.querySelector("#tabelaMatrizEpi tbody");
+
+  if (!tabela) {
+    alert("Tabela Matriz de EPI não encontrada.");
+    return;
+  }
+
   const linha = tabela.insertRow();
 
   linha.innerHTML = `
-    <td>${ghe}</td>
-    <td>${tipo}</td>
-    <td>${descricao}</td>
-    <td>${ca}</td>
-    <td>${validadeCa}</td>
-    <td>${periodicidade}</td>
+    <td>${textoSeguro(ghe)}</td>
+    <td>${textoSeguro(tipo)}</td>
+    <td>${textoSeguro(descricao)}</td>
+    <td>${textoSeguro(ca)}</td>
+    <td>${textoSeguro(validadeCa)}</td>
+    <td>${textoSeguro(periodicidade)}</td>
   `;
+
+  limparCampo("gheEpi");
+  limparCampo("tipoEpi");
+  limparCampo("descricaoEpi");
+  limparCampo("caEpi");
+  limparCampo("validadeCaEpi");
+  limparCampo("periodicidadeEpi");
 }
 
 function adicionarMatrizEpiAoDocumentoBase() {
-  adicionarAoDocumento("Matriz de EPI", document.getElementById("tabelaMatrizEpi").outerHTML);
+  const tabela = document.getElementById("tabelaMatrizEpi");
+
+  if (!tabela) {
+    alert("Tabela Matriz de EPI não encontrada.");
+    return;
+  }
+
+  adicionarAoDocumento("Matriz de EPI", tabela.outerHTML);
   alert("Matriz de EPI adicionada ao Documento Base.");
 }
 
 function adicionarPlanoAcaoAoDocumentoBase() {
-  adicionarAoDocumento("Plano de Ação", document.getElementById("tabelaPlanoAcao").outerHTML);
+  const tabela = document.getElementById("tabelaPlanoAcao");
+
+  if (!tabela) {
+    alert("Tabela Plano de Ação não encontrada.");
+    return;
+  }
+
+  adicionarAoDocumento("Plano de Ação", tabela.outerHTML);
   alert("Plano de Ação adicionado ao Documento Base.");
 }
 
 function adicionarPlanoTreinamentoAoDocumentoBase() {
-  adicionarAoDocumento("Plano de Treinamento", document.getElementById("tabelaPlanoTreinamento").outerHTML);
+  const tabela = document.getElementById("tabelaPlanoTreinamento");
+
+  if (!tabela) {
+    alert("Tabela Plano de Treinamento não encontrada.");
+    return;
+  }
+
+  adicionarAoDocumento("Plano de Treinamento", tabela.outerHTML);
   alert("Plano de Treinamento adicionado ao Documento Base.");
 }
+
 function imprimirTabela(idTabela, titulo) {
   const tabela = document.getElementById(idTabela);
 
@@ -323,7 +631,7 @@ function imprimirTabela(idTabela, titulo) {
         table {
           width: 100%;
           border-collapse: collapse;
-          font-size: 13px;
+          font-size: 11px;
         }
 
         th {
@@ -337,6 +645,11 @@ function imprimirTabela(idTabela, titulo) {
           padding: 6px;
           text-align: left;
           vertical-align: top;
+        }
+
+        ul {
+          margin: 0;
+          padding-left: 16px;
         }
 
         @page {

@@ -224,3 +224,50 @@ td button {
     padding: 6px;
   }
 }
+.quadro-riscos {
+  grid-column: 1 / -1;
+  border: 1px solid #bcccdc;
+  border-radius: 8px;
+  padding: 16px;
+  background: #f8fafc;
+}
+
+.quadro-riscos h3 {
+  margin-top: 0;
+  color: #0f2f4a;
+}
+
+.botoes-riscos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.botoes-riscos button,
+.risco-opcao {
+  padding: 8px 12px;
+  font-size: 14px;
+  background: #e6eef5;
+  color: #0f2f4a;
+  border: 1px solid #bcccdc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.botoes-riscos button:hover,
+.risco-opcao:hover {
+  background: #0f2f4a;
+  color: white;
+}
+
+.lista-possibilidades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lista-possibilidades p {
+  margin: 0;
+  color: #52606d;
+}
