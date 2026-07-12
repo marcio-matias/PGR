@@ -223,12 +223,74 @@ td button {
   td {
     padding: 6px;
   }
+
+td[contenteditable="true"] {
+  background: #fffdf2;
+  cursor: text;
 }
-.quadro-riscos {
-  grid-column: 1 / -1;
+
+td[contenteditable="true"]:focus {
+  outline: 2px solid #17496f;
+  background: #ffffff;
+}
+.input-tabela {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 4px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.input-tabela:focus {
+  outline: 2px solid #17496f;
+  background: #ffffff;
+}
+.cadastro-responsavel {
+  margin-top: 20px;
+  padding: 16px;
   border: 1px solid #bcccdc;
   border-radius: 8px;
-  padding: 16px;
+  background: #f8fafc;
+}
+
+.cadastro-responsavel h3 {
+  margin-top: 0;
+  color: #0f2f4a;
+}
+.botao-tabela {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+.botoes-historico {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}.card
+
+ .campo-busca {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.campo-busca input {
+  flex: 1;
+  margin-top: 0;
+}
+
+.campo-busca button {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  white-space: nowrap;
+.quadro-riscos {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
   background: #f8fafc;
 }
 
@@ -240,34 +302,53 @@ td button {
 .botoes-riscos {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 10px;
 }
 
-.botoes-riscos button,
-.risco-opcao {
-  padding: 8px 12px;
-  font-size: 14px;
-  background: #e6eef5;
-  color: #0f2f4a;
-  border: 1px solid #bcccdc;
-  border-radius: 6px;
-  cursor: pointer;
+.botoes-riscos button {
+  min-width: 120px;
+  padding: 12px 18px;
+  font-size: 15px;
 }
 
-.botoes-riscos button:hover,
-.risco-opcao:hover {
-  background: #0f2f4a;
-  color: white;
+.acoes-modulo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
 }
 
-.lista-possibilidades {
+.acoes-modulo button {
+  min-width: 190px;
+}
+.botoes-riscos-siglas {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.lista-possibilidades p {
-  margin: 0;
-  color: #52606d;
+.botoes-riscos-siglas button {
+  min-width: 46px;
+  width: 46px;
+  height: 42px;
+  padding: 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 8px;
+}
+function controlarOutroSetorEpi() {
+  const setor = pegarValor("setorEpi");
+  const campoOutroSetor = document.getElementById("campoOutroSetorEpi");
+
+  if (!campoOutroSetor) {
+    return;
+  }
+
+  if (setor === "Outros") {
+    campoOutroSetor.style.display = "flex";
+  } else {
+    campoOutroSetor.style.display = "none";
+    limparCampo("outroSetorEpi");
+  }
 }

@@ -2,6 +2,9 @@ console.log("PGR iniciado com sucesso.");
 
 let listaGhe = [];
 let listaMatrizEpi = [];
+let linhaHistoricoSelecionada = null;
+let dadosCnpjContratante = null;
+let dadosCnpjContratada = null;
 
 function pegarValor(id) {
   const campo = document.getElementById(id);
@@ -38,11 +41,14 @@ function mostrarSecao(idSecao) {
     secao.classList.remove("ativo");
   });
 
-  const secaoSelecionada = document.getElementById(idSecao);
+  const secaoEscolhida = document.getElementById(idSecao);
 
-  if (secaoSelecionada) {
-    secaoSelecionada.classList.add("ativo");
+  if (!secaoEscolhida) {
+    alert("Seção não encontrada: " + idSecao);
+    return;
   }
+
+  secaoEscolhida.classList.add("ativo");
 }
 
 function adicionarAoDocumento(titulo, conteudo) {
@@ -60,6 +66,133 @@ function adicionarAoDocumento(titulo, conteudo) {
   `;
 }
 
+function montarEnderecoCompleto(dados) {
+  const partes = [
+    dados.descricao_tipo_de_logradouro,
+    dados.logradouro,
+    dados.complemento,
+    dados.bairro
+  ];
+
+  return partes.filter(Boolean).join(", ");
+}
+
+async function consultarCnpj(cnpj) {
+  const resposta = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+
+  if (!resposta.ok) {
+    throw new Error("CNPJ não encontrado.");
+  }
+
+  return await resposta.json();
+}
+
+async function buscarCnpjContratante() {
+  const cnpj = pegarValor("contratanteCnpj").replace(/\D/g, "");
+
+  if (cnpj.length !== 14) {
+    alert("Digite um CNPJ válido com 14 números.");
+    return;
+  }
+
+  try {
+    const dados = await consultarCnpj(cnpj);
+    dadosCnpjContratante = dados;
+
+    document.getElementById("contratanteRazao").value = dados.razao_social || "";
+    document.getElementById("contratanteFantasia").value = dados.nome_fantasia || "";
+    document.getElementById("contratanteEndereco").value = montarEnderecoCompleto(dados);
+    document.getElementById("contratanteNumero").value = dados.numero || "";
+    document.getElementById("contratanteCidade").value = dados.municipio || "";
+    document.getElementById("contratanteUf").value = dados.uf || "";
+
+    alert("Dados do CNPJ preenchidos com sucesso.");
+  } catch (erro) {
+    alert("CNPJ não encontrado ou erro na consulta.");
+  }
+}
+
+async function buscarCnpjContratada() {
+  const cnpj = pegarValor("contratadaCnpj").replace(/\D/g, "");
+
+  if (cnpj.length !== 14) {
+    alert("Digite um CNPJ válido com 14 números.");
+    return;
+  }
+
+  try {
+    const dados = await consultarCnpj(cnpj);
+    dadosCnpjContratada = dados;
+
+    document.getElementById("contratadaRazao").value = dados.razao_social || "";
+    document.getElementById("contratadaFantasia").value = dados.nome_fantasia || "";
+    document.getElementById("contratadaEndereco").value = montarEnderecoCompleto(dados);
+    document.getElementById("contratadaNumero").value = dados.numero || "";
+    document.getElementById("contratadaCidade").value = dados.municipio || "";
+    document.getElementById("contratadaUf").value = dados.uf || "";
+
+    alert("Dados do CNPJ preenchidos com sucesso.");
+  } catch (erro) {
+    alert("CNPJ não encontrado ou erro na consulta.");
+  }
+}
+
+function buscarInscricaoEstadualContratante() {
+  const campo = document.getElementById("contratanteIe");
+
+  if (!campo) {
+    return;
+  }
+
+  const marcarIsento = confirm("Inscrição estadual não encontrada. Deseja marcar como ISENTO?");
+
+  if (marcarIsento) {
+    campo.value = "ISENTO";
+  }
+}
+
+function buscarInscricaoMunicipalContratante() {
+  const campo = document.getElementById("contratanteIm");
+
+  if (!campo) {
+    return;
+  }
+
+  const marcarIsento = confirm("Inscrição municipal não encontrada. Deseja marcar como ISENTO?");
+
+  if (marcarIsento) {
+    campo.value = "ISENTO";
+  }
+}
+
+function buscarInscricaoEstadualContratada() {
+  const campo = document.getElementById("contratadaIe");
+
+  if (!campo) {
+    return;
+  }
+
+  const marcarIsento = confirm("Inscrição estadual não encontrada. Deseja marcar como ISENTO?");
+
+  if (marcarIsento) {
+    campo.value = "ISENTO";
+  }
+}
+
+function buscarInscricaoMunicipalContratada() {
+  const campo = document.getElementById("contratadaIm");
+
+  if (!campo) {
+    return;
+  }
+
+  const marcarIsento = confirm("Inscrição municipal não encontrada. Deseja marcar como ISENTO?");
+
+  if (marcarIsento) {
+    campo.value = "ISENTO";
+  }
+}
+
 function adicionarHistoricoAoDocumentoBase() {
   const tabela = document.getElementById("tabelaHistorico");
 
@@ -72,6 +205,169 @@ function adicionarHistoricoAoDocumentoBase() {
   alert("Histórico adicionado ao Documento Base.");
 }
 
+function selecionarLinhaHistorico(linha) {
+  const linhas = document.querySelectorAll("#tabelaHistorico tbody tr");
+
+  linhas.forEach((item) => {
+    item.classList.remove("linha-selecionada");
+  });
+
+  linha.classList.add("linha-selecionada");
+  linhaHistoricoSelecionada = linha;
+}
+
+function inserirLinhaHistorico() {
+  const tabela = document.querySelector("#tabelaHistorico tbody");
+
+  if (!tabela) {
+    alert("Tabela de histórico não encontrada.");
+    return;
+  }
+
+  const novaLinha = tabela.insertRow();
+
+  novaLinha.onclick = function () {
+    selecionarLinhaHistorico(this);
+  };
+
+  novaLinha.innerHTML = `
+    <td contenteditable="true"></td>
+    <td>
+      <input type="date" class="input-tabela">
+    </td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true" class="responsavel-historico"></td>
+  `;
+
+  selecionarLinhaHistorico(novaLinha);
+}
+
+function excluirLinhaHistorico() {
+  if (!linhaHistoricoSelecionada) {
+    alert("Clique primeiro na linha que deseja excluir.");
+    return;
+  }
+
+  const confirmar = confirm("Deseja excluir a linha selecionada do histórico?");
+
+  if (!confirmar) {
+    return;
+  }
+
+  linhaHistoricoSelecionada.remove();
+  linhaHistoricoSelecionada = null;
+}
+
+function obterResponsaveisHistorico() {
+  const dados = localStorage.getItem("responsaveisHistoricoPgr");
+
+  if (!dados) {
+    return [];
+  }
+
+  return JSON.parse(dados);
+}
+
+function salvarResponsaveisHistorico(responsaveis) {
+  localStorage.setItem("responsaveisHistoricoPgr", JSON.stringify(responsaveis));
+}
+
+function salvarResponsavelHistorico() {
+  const nome = pegarValor("nomeResponsavelHistorico");
+  const registro = pegarValor("registroResponsavelHistorico");
+
+  if (!nome || !registro) {
+    alert("Preencha o nome e o registro do responsável.");
+    return;
+  }
+
+  const responsaveis = obterResponsaveisHistorico();
+
+  responsaveis.push({
+    nome,
+    registro
+  });
+
+  salvarResponsaveisHistorico(responsaveis);
+  carregarResponsaveisHistorico();
+
+  limparCampo("nomeResponsavelHistorico");
+  limparCampo("registroResponsavelHistorico");
+
+  alert("Responsável salvo com sucesso.");
+}
+
+function carregarResponsaveisHistorico() {
+  const select = document.getElementById("responsavelSalvoHistorico");
+
+  if (!select) {
+    return;
+  }
+
+  const responsaveis = obterResponsaveisHistorico();
+
+  select.innerHTML = `<option value="">Selecione</option>`;
+
+  responsaveis.forEach((responsavel, index) => {
+    select.innerHTML += `
+      <option value="${index}">
+        ${textoSeguro(responsavel.nome)} - ${textoSeguro(responsavel.registro)}
+      </option>
+    `;
+  });
+}
+
+function aplicarResponsavelLinhaSelecionada() {
+  const select = document.getElementById("responsavelSalvoHistorico");
+
+  if (!select || select.value === "") {
+    alert("Selecione um responsável salvo.");
+    return;
+  }
+
+  if (!linhaHistoricoSelecionada) {
+    alert("Clique primeiro na linha do histórico onde deseja aplicar o responsável.");
+    return;
+  }
+
+  const responsaveis = obterResponsaveisHistorico();
+  const responsavel = responsaveis[select.value];
+
+  if (!responsavel) {
+    alert("Responsável não encontrado.");
+    return;
+  }
+
+  const celulaResponsavel = linhaHistoricoSelecionada.querySelector(".responsavel-historico");
+
+  if (!celulaResponsavel) {
+    alert("Célula de responsável não encontrada.");
+    return;
+  }
+
+  celulaResponsavel.textContent = `${responsavel.nome} - ${responsavel.registro}`;
+}
+
+function removerResponsaveisDuplicados() {
+  const responsaveis = obterResponsaveisHistorico();
+  const mapa = new Map();
+
+  responsaveis.forEach((responsavel) => {
+    const chave = `${responsavel.nome.trim().toLowerCase()}-${responsavel.registro.trim().toLowerCase()}`;
+
+    if (!mapa.has(chave)) {
+      mapa.set(chave, responsavel);
+    }
+  });
+
+  const responsaveisUnicos = Array.from(mapa.values());
+
+  salvarResponsaveisHistorico(responsaveisUnicos);
+  carregarResponsaveisHistorico();
+
+  alert("Nomes duplicados removidos.");
+}
+
 function adicionarContratanteAoDocumentoBase() {
   const html = `
     <p><strong>Razão social:</strong> ${textoSeguro(pegarValor("contratanteRazao"))}</p>
@@ -80,11 +376,8 @@ function adicionarContratanteAoDocumentoBase() {
     <p><strong>Inscrição estadual:</strong> ${textoSeguro(pegarValor("contratanteIe"))}</p>
     <p><strong>Inscrição municipal:</strong> ${textoSeguro(pegarValor("contratanteIm"))}</p>
     <p><strong>Endereço:</strong> ${textoSeguro(pegarValor("contratanteEndereco"))}</p>
+    <p><strong>Número:</strong> ${textoSeguro(pegarValor("contratanteNumero"))}</p>
     <p><strong>Cidade/UF:</strong> ${textoSeguro(pegarValor("contratanteCidade"))}/${textoSeguro(pegarValor("contratanteUf"))}</p>
-    <p><strong>Área de abrangência:</strong> ${textoSeguro(pegarValor("contratanteArea"))}</p>
-    <p><strong>Gerência:</strong> ${textoSeguro(pegarValor("contratanteGerencia"))}</p>
-    <p><strong>Nome do fiscal:</strong> ${textoSeguro(pegarValor("contratanteFiscal"))}</p>
-    <p><strong>Chave do fiscal:</strong> ${textoSeguro(pegarValor("contratanteChaveFiscal"))}</p>
   `;
 
   adicionarAoDocumento("Empresa Contratante", html);
@@ -99,6 +392,7 @@ function adicionarContratadaAoDocumentoBase() {
     <p><strong>Inscrição estadual:</strong> ${textoSeguro(pegarValor("contratadaIe"))}</p>
     <p><strong>Inscrição municipal:</strong> ${textoSeguro(pegarValor("contratadaIm"))}</p>
     <p><strong>Endereço:</strong> ${textoSeguro(pegarValor("contratadaEndereco"))}</p>
+    <p><strong>Número:</strong> ${textoSeguro(pegarValor("contratadaNumero"))}</p>
     <p><strong>Cidade/UF:</strong> ${textoSeguro(pegarValor("contratadaCidade"))}/${textoSeguro(pegarValor("contratadaUf"))}</p>
     <p><strong>Responsável:</strong> ${textoSeguro(pegarValor("contratadaResponsavel"))}</p>
     <p><strong>Telefone:</strong> ${textoSeguro(pegarValor("contratadaTelefone"))}</p>
@@ -209,209 +503,6 @@ function adicionarGheAoDocumentoBase() {
   alert("GES/GHE adicionado ao Documento Base.");
 }
 
-const possibilidadesRiscos = {
-  fisico: [
-    "Ruído",
-    "Vibração",
-    "Calor",
-    "Frio",
-    "Radiação não ionizante",
-    "Radiação ionizante",
-    "Umidade",
-    "Pressões anormais"
-  ],
-
-  quimico: [
-    "Poeiras",
-    "Fumos metálicos",
-    "Névoas",
-    "Neblinas",
-    "Gases",
-    "Vapores",
-    "Produtos químicos",
-    "Solventes e diluentes",
-    "Tintas e vernizes"
-  ],
-
-  biologico: [
-    "Vírus",
-    "Bactérias",
-    "Fungos",
-    "Parasitas",
-    "Material biológico",
-    "Contato com animais peçonhentos",
-    "Esgoto ou resíduos contaminados"
-  ],
-
-  ergonomico: [
-    "Esforço físico intenso",
-    "Levantamento e transporte manual de carga",
-    "Postura inadequada",
-    "Movimentos repetitivos",
-    "Ritmo excessivo de trabalho",
-    "Trabalho em turno/noturno",
-    "Exigência de atenção constante"
-  ],
-
-  psicossocial: [
-    "Assédio moral",
-    "Assédio sexual",
-    "Conflitos interpessoais",
-    "Pressão excessiva por metas",
-    "Sobrecarga de trabalho",
-    "Jornada prolongada",
-    "Trabalho em turno ou noturno",
-    "Falta de autonomia",
-    "Comunicação deficiente",
-    "Violência no trabalho",
-    "Isolamento social",
-    "Exigência emocional intensa",
-    "Insegurança no emprego",
-    "Ritmo intenso de trabalho"
-  ],
-
-  acidente: [
-    "Trabalho em altura",
-    "Queda de mesmo nível",
-    "Queda de materiais",
-    "Choque elétrico",
-    "Corte e perfuração",
-    "Prensagem de membros",
-    "Atropelamento",
-    "Incêndio e explosão",
-    "Contato com máquinas e equipamentos",
-    "Animais peçonhentos"
-  ]
-};
-
-function listarPossibilidadesRisco(categoria) {
-  const lista = document.getElementById("listaPossibilidadesRisco");
-  const riscos = possibilidadesRiscos[categoria];
-
-  if (!lista || !riscos) {
-    return;
-  }
-
-  lista.innerHTML = riscos
-    .map((risco) => {
-      return `
-        <button type="button" class="risco-opcao" onclick="adicionarRiscoPossivelGhe('${atributoSeguro(risco)}')">
-          ${textoSeguro(risco)}
-        </button>
-      `;
-    })
-    .join("");
-}
-
-function adicionarRiscoPossivelGhe(risco) {
-  const campo = document.getElementById("riscosPossiveisGhe");
-
-  if (!campo) {
-    return;
-  }
-
-  const valorAtual = campo.value.trim();
-
-  if (valorAtual === "") {
-    campo.value = risco;
-    return;
-  }
-
-  const riscosExistentes = valorAtual
-    .split(";")
-    .map((item) => item.trim().toLowerCase());
-
-  if (riscosExistentes.includes(risco.toLowerCase())) {
-    alert("Esse risco já foi adicionado.");
-    return;
-  }
-
-  campo.value = `${valorAtual}; ${risco}`;
-}
-
-function adicionarRisco() {
-  const processoAmbiente = pegarValor("processoAmbienteRisco");
-  const atividade = pegarValor("atividadeRisco");
-  const perigo = pegarValor("perigoRisco");
-  const fonteCircunstancia = pegarValor("fonteCircunstanciaRisco");
-  const agravos = pegarValor("agravosRisco");
-  const grupoExposto = pegarValor("grupoExpostoRisco");
-  const gesGhe = pegarValor("gesGheRisco");
-  const medidasPrevencao = pegarValor("medidasPrevencaoRisco");
-  const formaExposicao = pegarValor("formaExposicaoRisco");
-  const frequenciaExposicao = pegarValor("frequenciaExposicaoRisco");
-  const duracaoExposicao = pegarValor("duracaoExposicaoRisco");
-  const intensidadeExposicao = pegarValor("intensidadeExposicaoRisco");
-  const observacoesExposicao = pegarValor("observacoesExposicaoRisco");
-  const tipoAvaliacao = pegarValor("tipoAvaliacaoRisco");
-  const resultadoAvaliacao = pegarValor("resultadoAvaliacaoRisco");
-  const epis = pegarValor("episRisco");
-  const probabilidade = Number(pegarValor("probabilidadeRisco"));
-  const severidade = Number(pegarValor("severidadeRisco"));
-
-  if (
-    !processoAmbiente ||
-    !atividade ||
-    !perigo ||
-    !fonteCircunstancia ||
-    !agravos ||
-    !grupoExposto ||
-    !medidasPrevencao ||
-    !formaExposicao ||
-    !frequenciaExposicao ||
-    !duracaoExposicao ||
-    !tipoAvaliacao ||
-    !probabilidade ||
-    !severidade
-  ) {
-    alert("Preencha os campos obrigatórios do inventário de riscos ocupacionais.");
-    return;
-  }
-
-  const risco = probabilidade * severidade;
-  const classificacao = classificarRisco(risco);
-  const prioridadeAcao = definirPrioridadeAcao(classificacao);
-
-  const tabela = document.querySelector("#tabelaInventario tbody");
-
-  if (!tabela) {
-    alert("Tabela do inventário não encontrada.");
-    return;
-  }
-
-  const linha = tabela.insertRow();
-
-  linha.innerHTML = `
-    <td>${textoSeguro(processoAmbiente)}</td>
-    <td>${textoSeguro(atividade)}</td>
-    <td>${textoSeguro(perigo)}</td>
-    <td>${textoSeguro(fonteCircunstancia)}</td>
-    <td>${textoSeguro(agravos)}</td>
-    <td>${textoSeguro(grupoExposto)}</td>
-    <td>${textoSeguro(gesGhe)}</td>
-    <td>${textoSeguro(medidasPrevencao)}</td>
-    <td>${textoSeguro(formaExposicao)}</td>
-    <td>${textoSeguro(frequenciaExposicao)}</td>
-    <td>${textoSeguro(duracaoExposicao)}</td>
-    <td>${textoSeguro(intensidadeExposicao)}</td>
-    <td>${textoSeguro(observacoesExposicao)}</td>
-    <td>${textoSeguro(tipoAvaliacao)}</td>
-    <td>${textoSeguro(resultadoAvaliacao)}</td>
-    <td>${textoSeguro(epis)}</td>
-    <td>${probabilidade}</td>
-    <td>${severidade}</td>
-    <td>${risco}</td>
-    <td>${classificacao}</td>
-    <td>${prioridadeAcao}</td>
-    <td>
-      <button onclick="criarAcao('${atributoSeguro(perigo)}', '${atributoSeguro(grupoExposto)}')">Criar ação</button>
-      <button onclick="criarTreinamento('${atributoSeguro(perigo)}', '${atributoSeguro(grupoExposto)}')">Criar treinamento</button>
-    </td>
-  `;
-
-  limparCamposInventario();
-}
-
 function classificarRisco(risco) {
   if (risco <= 4) {
     return "Baixo";
@@ -516,27 +607,30 @@ function adicionarInventarioAoDocumentoBase() {
 }
 
 function adicionarEpiMatriz() {
-  const ghe = pegarValor("gheEpi");
+  let setor = pegarValor("setorEpi");
+
+  if (setor === "Outros") {
+  setor = pegarValor("outroSetorEpi");
+  }
   const tipo = pegarValor("tipoEpi");
   const descricao = pegarValor("descricaoEpi");
   const ca = pegarValor("caEpi");
   const validadeCa = pegarValor("validadeCaEpi");
   const periodicidade = pegarValor("periodicidadeEpi");
 
-  if (!ghe || !tipo || !descricao || !ca) {
-    alert("Preencha GHE, tipo de EPI, descrição do EPI e CA.");
+  if (!setor || !tipo || !descricao || !ca) {
+    alert("Preencha setor/área, tipo de EPI, descrição do EPI e CA.");
     return;
   }
 
   listaMatrizEpi.push({
-    ghe,
+    setor,
     tipo,
     descricao,
     ca,
     validadeCa,
     periodicidade
   });
-
   const tabela = document.querySelector("#tabelaMatrizEpi tbody");
 
   if (!tabela) {
@@ -547,7 +641,7 @@ function adicionarEpiMatriz() {
   const linha = tabela.insertRow();
 
   linha.innerHTML = `
-    <td>${textoSeguro(ghe)}</td>
+    <td>${textoSeguro(setor)}</td>
     <td>${textoSeguro(tipo)}</td>
     <td>${textoSeguro(descricao)}</td>
     <td>${textoSeguro(ca)}</td>
@@ -555,7 +649,13 @@ function adicionarEpiMatriz() {
     <td>${textoSeguro(periodicidade)}</td>
   `;
 
-  limparCampo("gheEpi");
+  limparCampo("setorEpi");
+  limparCampo("outroSetorEpi");
+
+  const campoOutroSetor = document.getElementById("campoOutroSetorEpi");
+  if (campoOutroSetor) {
+  campoOutroSetor.style.display = "none";
+  }
   limparCampo("tipoEpi");
   limparCampo("descricaoEpi");
   limparCampo("caEpi");
@@ -669,3 +769,82 @@ function imprimirTabela(idTabela, titulo) {
   janelaImpressao.focus();
   janelaImpressao.print();
 }
+function adicionarCategoriaRiscoGhe(categoria) {
+  const campo = document.getElementById("riscosPossiveisGhe");
+
+  if (!campo) {
+    alert("Campo de riscos possíveis não encontrado.");
+    return;
+  }
+
+  const valorAtual = campo.value.trim();
+
+  if (valorAtual === "") {
+    campo.value = categoria;
+    return;
+  }
+
+  const categoriasExistentes = valorAtual
+    .split(";")
+    .map((item) => item.trim().toLowerCase());
+
+  if (categoriasExistentes.includes(categoria.toLowerCase())) {
+    alert("Essa categoria já foi adicionada.");
+    return;
+  }
+
+  campo.value = `${valorAtual}; ${categoria}`;
+}
+
+function consultarCaOficial() {
+  const ca = pegarValor("caEpi").replace(/\D/g, "");
+
+  if (!ca) {
+    alert("Digite o número do CA antes de consultar.");
+    return;
+  }
+
+  const confirmar = confirm(
+    "A consulta será aberta no site oficial do CAEPI/MTE. Após localizar o CA, copie a descrição para o campo correspondente. Deseja abrir?"
+  );
+
+  if (!confirmar) {
+    return;
+  }
+
+  window.open("https://caepi.mte.gov.br/internet/ConsultaCAInternet.aspx", "_blank");
+}
+function controlarOutroSetorEpi() {
+  const setor = pegarValor("setorEpi");
+  const campoOutroSetor = document.getElementById("outroSetorEpi");
+
+  if (!campoOutroSetor) {
+    return;
+  }
+
+  if (setor === "Outros") {
+    campoOutroSetor.style.display = "block";
+  } else {
+    campoOutroSetor.style.display = "none";
+    limparCampo("outroSetorEpi");
+  }
+}
+
+function controlarOutraPeriodicidadeEpi() {
+  const periodicidade = pegarValor("periodicidadeEpi");
+  const campoOutraPeriodicidade = document.getElementById("outraPeriodicidadeEpi");
+
+  if (!campoOutraPeriodicidade) {
+    return;
+  }
+
+  if (periodicidade === "Outro (informar)") {
+    campoOutraPeriodicidade.style.display = "block";
+  } else {
+    campoOutraPeriodicidade.style.display = "none";
+    limparCampo("outraPeriodicidadeEpi");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", carregarResponsaveisHistorico);
+f

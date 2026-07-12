@@ -42,20 +42,56 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>00</td>
-          <td>__/__/____</td>
-          <td>Emissão inicial do PGR</td>
-          <td>____________________</td>
+        <tr onclick="selecionarLinhaHistorico(this)">
+          <td contenteditable="true">00</td>
+          <td><input type="date" class="input-tabela"></td>
+          <td contenteditable="true">Emissão inicial do PGR</td>
+          <td contenteditable="true" class="responsavel-historico"></td>
         </tr>
-        <tr>
-          <td>01</td>
-          <td>__/__/____</td>
-          <td>Revisão do inventário de riscos</td>
-          <td>____________________</td>
+
+        <tr onclick="selecionarLinhaHistorico(this)">
+          <td contenteditable="true">01</td>
+          <td><input type="date" class="input-tabela"></td>
+          <td contenteditable="true">Revisão do inventário de riscos</td>
+          <td contenteditable="true" class="responsavel-historico"></td>
         </tr>
       </tbody>
     </table>
+
+    <div class="botoes-historico">
+      <button class="botao-secundario" onclick="inserirLinhaHistorico()">Inserir linha</button>
+      <button class="botao-secundario" onclick="excluirLinhaHistorico()">Excluir linha selecionada</button>
+    </div>
+
+    <div class="cadastro-responsavel">
+      <h3>Cadastro de Responsável Técnico</h3>
+
+      <div class="grid">
+        <label>Nome do responsável
+          <input type="text" id="nomeResponsavelHistorico" placeholder="Ex.: Márcio Matias">
+        </label>
+
+        <label>Registro
+          <input type="text" id="registroResponsavelHistorico" placeholder="Ex.: CREA, CFT, MTE ou outro registro">
+        </label>
+      </div>
+
+      <button class="botao-secundario" onclick="salvarResponsavelHistorico()">Salvar responsável</button>
+
+      <label>Selecionar responsável salvo
+        <select id="responsavelSalvoHistorico">
+          <option value="">Selecione</option>
+        </select>
+      </label>
+
+      <button class="botao-secundario" onclick="aplicarResponsavelLinhaSelecionada()">
+        Aplicar responsável na linha selecionada
+      </button>
+
+      <button class="botao-secundario" onclick="removerResponsaveisDuplicados()">
+        Remover nomes duplicados
+      </button>
+    </div>
 
     <button class="botao-secundario" onclick="adicionarHistoricoAoDocumentoBase()">
       Adicionar Histórico ao Documento Base
@@ -75,19 +111,26 @@
       </label>
 
       <label>CNPJ
-        <input type="text" id="contratanteCnpj">
+        <div class="campo-busca">
+          <input type="text" id="contratanteCnpj" placeholder="Digite o CNPJ">
+          <button type="button" onclick="buscarCnpjContratante()">Buscar CNPJ</button>
+        </div>
       </label>
 
       <label>Inscrição estadual
-        <input type="text" id="contratanteIe">
+        <input type="text" id="contratanteIe" placeholder="Ex.: ISENTO">
       </label>
 
       <label>Inscrição municipal
-        <input type="text" id="contratanteIm">
+        <input type="text" id="contratanteIm" placeholder="Ex.: ISENTO">
       </label>
 
       <label>Endereço
         <input type="text" id="contratanteEndereco">
+      </label>
+
+      <label>Número
+        <input type="text" id="contratanteNumero">
       </label>
 
       <label>Cidade
@@ -96,22 +139,6 @@
 
       <label>UF
         <input type="text" id="contratanteUf">
-      </label>
-
-      <label>Área de abrangência
-        <input type="text" id="contratanteArea">
-      </label>
-
-      <label>Gerência
-        <input type="text" id="contratanteGerencia">
-      </label>
-
-      <label>Nome do fiscal
-        <input type="text" id="contratanteFiscal">
-      </label>
-
-      <label>Chave do fiscal
-        <input type="text" id="contratanteChaveFiscal">
       </label>
     </div>
 
@@ -133,19 +160,26 @@
       </label>
 
       <label>CNPJ
-        <input type="text" id="contratadaCnpj">
+        <div class="campo-busca">
+          <input type="text" id="contratadaCnpj" placeholder="Digite o CNPJ">
+          <button type="button" onclick="buscarCnpjContratada()">Buscar CNPJ</button>
+        </div>
       </label>
 
       <label>Inscrição estadual
-        <input type="text" id="contratadaIe">
+        <input type="text" id="contratadaIe" placeholder="Ex.: ISENTO">
       </label>
 
       <label>Inscrição municipal
-        <input type="text" id="contratadaIm">
+        <input type="text" id="contratadaIm" placeholder="Ex.: ISENTO">
       </label>
 
       <label>Endereço
         <input type="text" id="contratadaEndereco">
+      </label>
+
+      <label>Número
+        <input type="text" id="contratadaNumero">
       </label>
 
       <label>Cidade
@@ -219,11 +253,22 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
 
     <div class="grid">
       <label>GES/GHE
-        <input type="text" id="codigoGhe" placeholder="Ex.: GHE-01">
+        <select id="codigoGhe" required>
+          <option value="">Selecione</option>
+          <option value="GHE-01">GHE-01</option>
+          <option value="GHE-02">GHE-02</option>
+          <option value="GHE-03">GHE-03</option>
+          <option value="GHE-04">GHE-04</option>
+          <option value="GHE-05">GHE-05</option>
+        </select>
       </label>
 
       <label>Setor
-        <input type="text" id="setorGhe" placeholder="Ex.: Operacional">
+        <select id="setorGhe" required>
+          <option value="">Selecione</option>
+          <option value="Operacional">Operacional</option>
+          <option value="Administrativo">Administrativo</option>
+        </select>
       </label>
 
       <label>Cargo/Função
@@ -234,39 +279,29 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
         <textarea id="atividadesGhe" placeholder="Descreva as atividades exercidas"></textarea>
       </label>
 
-      <label>Riscos possíveis do GES/GHE
-        <textarea id="riscosPossiveisGhe" placeholder="Ex.: Trabalho em altura; agentes químicos presentes em tintas, solventes e diluentes; radiação solar; esforço físico e posturas inadequadas"></textarea>
+      <label class="campo-largo">Riscos possíveis do GES/GHE
+        <textarea id="riscosPossiveisGhe" placeholder="Ex.: Físico; Químico; Biológico; Ergonômico; Acidente; Psicossocial"></textarea>
       </label>
-    </div>
 
-    <div class="quadro-riscos">
-      <h3>Possibilidades de riscos por categoria</h3>
+      <div class="quadro-riscos campo-largo">
+        <h3>Possibilidades de riscos por categoria</h3>
 
-      <div class="botoes-riscos">
-        <button type="button" onclick="listarPossibilidadesRisco('fisico')">Físico</button>
-        <button type="button" onclick="listarPossibilidadesRisco('quimico')">Químico</button>
-        <button type="button" onclick="listarPossibilidadesRisco('biologico')">Biológico</button>
-        <button type="button" onclick="listarPossibilidadesRisco('ergonomico')">Ergonômico</button>
-        <button type="button" onclick="listarPossibilidadesRisco('psicossocial')">Psicossocial</button>
-        <button type="button" onclick="listarPossibilidadesRisco('acidente')">Acidente</button>
-      </div>
-
-      <div id="listaPossibilidadesRisco" class="lista-possibilidades">
-        <p>Selecione uma categoria para listar os riscos possíveis.</p>
+        <div class="botoes-riscos botoes-riscos-siglas">
+          <button type="button" title="Físico" onclick="adicionarCategoriaRiscoGhe('Físico')">F</button>
+          <button type="button" title="Químico" onclick="adicionarCategoriaRiscoGhe('Químico')">Q</button>
+          <button type="button" title="Biológico" onclick="adicionarCategoriaRiscoGhe('Biológico')">B</button>
+          <button type="button" title="Ergonômico" onclick="adicionarCategoriaRiscoGhe('Ergonômico')">E</button>
+          <button type="button" title="Acidente" onclick="adicionarCategoriaRiscoGhe('Acidente')">A</button>
+          <button type="button" title="Psicossocial" onclick="adicionarCategoriaRiscoGhe('Psicossocial')">P</button>
+        </div>
       </div>
     </div>
 
-    <button class="botao-secundario" onclick="adicionarGhe()">
-      Cadastrar GES/GHE
-    </button>
-
-    <button class="botao-secundario" onclick="adicionarGheAoDocumentoBase()">
-      Adicionar ao Documento Base
-    </button>
-
-    <button class="botao-secundario" onclick="imprimirTabela('tabelaGhe', 'GES/GHE')">
-      Imprimir / Salvar PDF
-    </button>
+    <div class="acoes-modulo">
+      <button class="botao-secundario" onclick="adicionarGhe()">Cadastrar GES/GHE</button>
+      <button class="botao-secundario" onclick="adicionarGheAoDocumentoBase()">Adicionar ao Documento Base</button>
+      <button class="botao-secundario" onclick="imprimirTabela('tabelaGhe', 'GES/GHE')">Imprimir / Salvar PDF</button>
+    </div>
 
     <div class="tabela-container">
       <table id="tabelaGhe">
@@ -289,27 +324,27 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
 
     <div class="grid">
       <label>Processo / Ambiente de trabalho
-        <textarea id="processoAmbienteRisco" placeholder="Ex.: Área externa de torre de telecomunicação, com atividade em estrutura metálica"></textarea>
+        <textarea id="processoAmbienteRisco" placeholder="Ex.: Área externa de torre de telecomunicação"></textarea>
       </label>
 
       <label>Caracterização da atividade
-        <textarea id="atividadeRisco" placeholder="Ex.: Preparação da superfície e pintura da estrutura metálica da torre de telecomunicação"></textarea>
+        <textarea id="atividadeRisco" placeholder="Ex.: Preparação da superfície e pintura da estrutura metálica"></textarea>
       </label>
 
       <label>Perigo / Fator de risco
-        <textarea id="perigoRisco" placeholder="Ex.: Solventes e diluentes; radiação solar; esforço físico e posturas inadequadas"></textarea>
+        <textarea id="perigoRisco" placeholder="Ex.: Solventes; radiação solar; esforço físico"></textarea>
       </label>
 
       <label>Fonte / Circunstância
-        <textarea id="fonteCircunstanciaRisco" placeholder="Ex.: Manipulação, mistura e aplicação de tintas; evaporação de solventes durante a pintura"></textarea>
+        <textarea id="fonteCircunstanciaRisco" placeholder="Ex.: Manipulação e aplicação de tintas"></textarea>
       </label>
 
       <label>Possíveis lesões ou agravos à saúde
-        <textarea id="agravosRisco" placeholder="Ex.: Irritação da pele, olhos e vias respiratórias, dermatite de contato, intoxicação"></textarea>
+        <textarea id="agravosRisco" placeholder="Ex.: Irritação da pele, olhos e vias respiratórias"></textarea>
       </label>
 
       <label>Grupo de trabalhadores expostos
-        <input type="text" id="grupoExpostoRisco" placeholder="Ex.: Pintores, ajudantes e trabalhadores próximos">
+        <input type="text" id="grupoExpostoRisco" placeholder="Ex.: Pintores e ajudantes">
       </label>
 
       <label>GES/GHE
@@ -317,7 +352,7 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
       </label>
 
       <label>Medidas de prevenção implementadas
-        <textarea id="medidasPrevencaoRisco" placeholder="Ex.: Ventilação, uso de respirador, luvas químicas, óculos de proteção, treinamento e FISPQ disponível"></textarea>
+        <textarea id="medidasPrevencaoRisco" placeholder="Ex.: EPI, treinamento, procedimento, FISPQ"></textarea>
       </label>
 
       <label>Forma de exposição
@@ -331,19 +366,19 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
       </label>
 
       <label>Frequência da exposição
-        <input type="text" id="frequenciaExposicaoRisco" placeholder="Ex.: diária, semanal, mensal, eventual">
+        <input type="text" id="frequenciaExposicaoRisco" placeholder="Ex.: diária, semanal, eventual">
       </label>
 
       <label>Duração da exposição
-        <input type="text" id="duracaoExposicaoRisco" placeholder="Ex.: 2 horas/dia, jornada inteira, 30 min/atividade">
+        <input type="text" id="duracaoExposicaoRisco" placeholder="Ex.: 2 horas/dia">
       </label>
 
       <label>Intensidade / Concentração
-        <input type="text" id="intensidadeExposicaoRisco" placeholder="Ex.: NEN 87 dB(A), qualitativa, abaixo do limite">
+        <input type="text" id="intensidadeExposicaoRisco" placeholder="Ex.: qualitativa, abaixo do limite">
       </label>
 
       <label>Observações da exposição
-        <textarea id="observacoesExposicaoRisco" placeholder="Detalhe como ocorre a exposição do trabalhador ao perigo"></textarea>
+        <textarea id="observacoesExposicaoRisco" placeholder="Detalhe como ocorre a exposição"></textarea>
       </label>
 
       <label>Tipo de avaliação / Monitoramento
@@ -357,11 +392,11 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
       </label>
 
       <label>Dados da avaliação / Resultado
-        <textarea id="resultadoAvaliacaoRisco" placeholder="Ex.: Avaliação qualitativa da exposição a agentes químicos presentes em tintas e solventes"></textarea>
+        <textarea id="resultadoAvaliacaoRisco" placeholder="Ex.: Avaliação qualitativa realizada"></textarea>
       </label>
 
       <label>EPIs recomendados
-        <textarea id="episRisco" placeholder="Ex.: Respirador com filtro químico, luvas nitrílicas, óculos de segurança, vestimenta de proteção"></textarea>
+        <textarea id="episRisco" placeholder="Ex.: Respirador, luvas, óculos"></textarea>
       </label>
 
       <label>Probabilidade (P)
@@ -387,17 +422,11 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
       </label>
     </div>
 
-    <button class="botao-secundario" onclick="adicionarRisco()">
-      Adicionar risco ao inventário
-    </button>
-
-    <button class="botao-secundario" onclick="adicionarInventarioAoDocumentoBase()">
-      Adicionar ao Documento Base
-    </button>
-
-    <button class="botao-secundario" onclick="imprimirTabela('tabelaInventario', 'Inventário de Riscos Ocupacionais')">
-      Imprimir / Salvar PDF
-    </button>
+    <div class="acoes-modulo">
+      <button class="botao-secundario" onclick="adicionarRisco()">Adicionar risco ao inventário</button>
+      <button class="botao-secundario" onclick="adicionarInventarioAoDocumentoBase()">Adicionar ao Documento Base</button>
+      <button class="botao-secundario" onclick="imprimirTabela('tabelaInventario', 'Inventário de Riscos Ocupacionais')">Imprimir / Salvar PDF</button>
+    </div>
 
     <div class="tabela-container">
       <table id="tabelaInventario">
@@ -415,15 +444,15 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
             <th>Frequência</th>
             <th>Duração</th>
             <th>Intensidade/Concentração</th>
-            <th>Observações da exposição</th>
-            <th>Avaliação/Monitoramento</th>
+            <th>Observações</th>
+            <th>Avaliação</th>
             <th>Resultado</th>
             <th>EPIs</th>
             <th>Probabilidade</th>
             <th>Severidade</th>
             <th>Nível do risco</th>
             <th>Classificação</th>
-            <th>Prioridade de ação</th>
+            <th>Prioridade</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -433,37 +462,83 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
   </section>
 
   <section class="card" id="matriz-epi">
-    <h2>Matriz de EPI</h2>
+  <h2>Matriz de EPI</h2>
 
-    <div class="grid">
-      <label>GHE
-        <input type="text" id="gheEpi" placeholder="Ex.: GHE-01">
-      </label>
+  <div class="grid">
+    <label>Setor/Área
+      <select id="setorEpi" onchange="controlarOutroSetorEpi()">
+        <option value="">Selecione</option>
+        <option value="Administrativo">Administrativo</option>
+        <option value="Operação">Operação</option>
+        <option value="Manutenção">Manutenção</option>
+        <option value="Produção">Produção</option>
+        <option value="Logística">Logística</option>
+        <option value="Almoxarifado">Almoxarifado</option>
+        <option value="Expedição">Expedição</option>
+        <option value="Qualidade">Qualidade</option>
+        <option value="Laboratório">Laboratório</option>
+        <option value="Engenharia">Engenharia</option>
+        <option value="Limpeza">Limpeza</option>
+        <option value="Segurança do Trabalho">Segurança do Trabalho</option>
+        <option value="Comercial">Comercial</option>
+        <option value="Outros">Outros</option>
+      </select>
 
-      <label>Tipo de EPI
-        <input type="text" id="tipoEpi" placeholder="Ex.: Botina de Segurança">
-      </label>
+      <input
+        type="text"
+        id="outroSetorEpi"
+        class="campo-condicional"
+        placeholder="Digite o setor/área"
+        style="display: none;"
+      >
+    </label>
 
-      <label>Descrição do EPI
-        <input type="text" id="descricaoEpi" placeholder="Ex.: Botina de segurança com biqueira">
-      </label>
+    <label>Tipo de EPI
+      <input type="text" id="tipoEpi" placeholder="Ex.: Botina de Segurança">
+    </label>
 
-      <label>CA
+    <label class="campo-largo">Descrição do EPI
+      <textarea id="descricaoEpi" placeholder="Ex.: Botina de segurança com biqueira"></textarea>
+    </label>
+
+    <label>CA
+      <div class="campo-busca">
         <input type="text" id="caEpi" placeholder="Ex.: 28474">
-      </label>
+        <button type="button" onclick="consultarCaOficial()">Consultar CA</button>
+      </div>
+    </label>
 
-      <label>Validade do CA
-        <input type="date" id="validadeCaEpi">
-      </label>
+    <label>Validade do CA
+      <input type="date" id="validadeCaEpi">
+    </label>
 
-      <label>Periodicidade de Troca
-        <input type="text" id="periodicidadeEpi" placeholder="Ex.: A cada 6 meses ou conforme desgaste">
-      </label>
-    </div>
+    <label>Periodicidade de troca
+      <select id="periodicidadeEpi" onchange="controlarOutraPeriodicidadeEpi()">
+        <option value="">Selecione</option>
+        <option value="Indeterminado">Indeterminado</option>
+        <option value="Validade do CA">Validade do CA</option>
+        <option value="Conforme desgaste">Conforme desgaste</option>
+        <option value="Conforme inspeção">Conforme inspeção</option>
+        <option value="Mensal (1 mês)">Mensal (1 mês)</option>
+        <option value="Trimestral (3 meses)">Trimestral (3 meses)</option>
+        <option value="Semestral (6 meses)">Semestral (6 meses)</option>
+        <option value="Anual (12 meses)">Anual (12 meses)</option>
+        <option value="Conforme fabricante">Conforme fabricante</option>
+        <option value="Outro (informar)">Outro (informar)</option>
+      </select>
 
-    <button class="botao-secundario" onclick="adicionarEpiMatriz()">
-      Cadastrar EPI
-    </button>
+      <input
+        type="text"
+        id="outraPeriodicidadeEpi"
+        class="campo-condicional"
+        placeholder="Ex.: A cada 45 dias"
+        style="display: none;"
+      >
+    </label>
+  </div>
+
+  <div class="acoes-modulo">
+    <button class="botao-secundario" onclick="adicionarEpiMatriz()">Cadastrar EPI</button>
 
     <button class="botao-secundario" onclick="adicionarMatrizEpiAoDocumentoBase()">
       Adicionar ao Documento Base
@@ -472,23 +547,25 @@ O PGR contempla as informações das empresas, áreas de abrangência, funções
     <button class="botao-secundario" onclick="imprimirTabela('tabelaMatrizEpi', 'Matriz de EPI')">
       Imprimir / Salvar PDF
     </button>
+  </div>
 
-    <div class="tabela-container">
-      <table id="tabelaMatrizEpi">
-        <thead>
-          <tr>
-            <th>GHE</th>
-            <th>Tipo de EPI</th>
-            <th>Descrição do EPI</th>
-            <th>CA</th>
-            <th>Validade do CA</th>
-            <th>Periodicidade de Troca</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+  <div class="tabela-container">
+    <table id="tabelaMatrizEpi">
+      <thead>
+        <tr>
+          <th>Setor/Área</th>
+          <th>Tipo de EPI</th>
+          <th>Descrição do EPI</th>
+          <th>CA</th>
+          <th>Validade do CA</th>
+          <th>Periodicidade de troca</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
 
   <section class="card" id="plano-acao">
     <h2>Plano de Ação</h2>
