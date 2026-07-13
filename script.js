@@ -201,7 +201,7 @@ function adicionarHistoricoAoDocumentoBase() {
     return;
   }
 
-  adicionarAoDocumento("Histórico de Revisões", tabela.outerHTML);
+  adicionarAoDocumento("Índice de Revisões", tabela.outerHTML);
   alert("Histórico adicionado ao Documento Base.");
 }
 
@@ -892,6 +892,36 @@ function inserirLogoFolhaRosto(event) {
   };
 
   leitor.readAsDataURL(arquivo);
+}
+function enviarIndiceRevisoesParaFolha() {
+  const tabelaOrigem = document.querySelector("#tabelaHistorico tbody");
+  const tabelaDestino = document.querySelector("#tabelaIndiceFolha tbody");
+
+  if (!tabelaOrigem || !tabelaDestino) {
+    alert("Tabela de origem ou destino não encontrada.");
+    return;
+  }
+
+  tabelaDestino.innerHTML = "";
+
+  const linhas = tabelaOrigem.querySelectorAll("tr");
+
+  linhas.forEach((linha) => {
+    const colunas = linha.querySelectorAll("td");
+
+    const revisao = colunas[0]?.innerText.trim() || "";
+    const data = colunas[1]?.querySelector("input")?.value || "";
+    const descricao = colunas[2]?.innerText.trim() || "";
+
+    const novaLinha = tabelaDestino.insertRow();
+
+    novaLinha.innerHTML = `
+      <td class="coluna-rev" contenteditable="true">${textoSeguro(revisao)}</td>
+      <td contenteditable="true">${textoSeguro(descricao)}</td>
+    `;
+  });
+
+  alert("Índice de Revisões enviado para a Folha de Rosto.");
 }
 document.addEventListener("DOMContentLoaded", carregarResponsaveisHistorico);
 f

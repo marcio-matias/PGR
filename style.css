@@ -453,3 +453,10 @@ td[contenteditable="true"]:focus {
   font-size: 9px;
   border-radius: 4px;
 }
+.coluna-rev {
+  width: 34px;
+  min-width: 34px;
+  max-width: 34px;
+  text-align: center;
+  white-space: nowrap;
+}
