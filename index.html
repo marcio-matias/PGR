@@ -14,6 +14,7 @@
 </header>
 
 <nav class="menu">
+  <button onclick="mostrarSecao('folha-rosto')">Folha de Rosto</button>
   <button onclick="mostrarSecao('historico')">Histórico</button>
   <button onclick="mostrarSecao('contratante')">Contratante</button>
   <button onclick="mostrarSecao('contratada')">Contratada</button>
@@ -27,6 +28,122 @@
   <button onclick="mostrarSecao('documento-base')">Documento Base</button>
 </nav>
 
+<section class="card" id="folha-rosto">
+  <h2>Folha de Rosto</h2>
+
+  <div class="folha-rosto-documento">
+    <table class="tabela-folha-rosto">
+      <tr>
+        <td rowspan="3" class="logo-folha">
+  <div class="area-logo">
+    <img id="logoFolhaRosto" src="" alt="Logo" style="display: none;">
+    <span id="textoLogoFolha">LOGO</span>
+  </div>
+
+  <input
+    type="file"
+    id="inputLogoFolha"
+    accept="image/*"
+    style="display: none;"
+    onchange="inserirLogoFolhaRosto(event)"
+  >
+
+  <button type="button" class="botao-logo" onclick="document.getElementById('inputLogoFolha').click()">
+    Inserir logo
+  </button>
+</td>
+        <td>Documento:</td>
+        <td><strong>PGR - PROGRAMA DE GERENCIAMENTO DE RISCOS</strong></td>
+      </tr>
+      <tr>
+        <td>Empresa:</td>
+        <td contenteditable="true">PETRÓLEO BRASILEIRO S.A PETROBRAS</td>
+      </tr>
+      <tr>
+        <td>Elaborador:</td>
+        <td contenteditable="true">Nome do elaborador - Registro</td>
+      </tr>
+    </table>
+
+    <table class="tabela-folha-rosto">
+      <tr>
+        <th>REV</th>
+        <th>ÍNDICE DE REVISÕES</th>
+      </tr>
+      <tr>
+        <td contenteditable="true">0</td>
+        <td contenteditable="true">EMISSÃO INICIAL</td>
+      </tr>
+      <tr>
+        <td style="height: 320px;"></td>
+        <td></td>
+      </tr>
+    </table>
+
+    <table class="tabela-folha-rosto">
+      <tr>
+        <th colspan="3">ASSINATURAS:</th>
+      </tr>
+      <tr>
+        <td>Execução:</td>
+        <td>Aprovação:</td>
+        <td>Elaboração:</td>
+      </tr>
+      <tr>
+        <td style="height: 70px;"></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+
+    <table class="tabela-folha-rosto">
+      <tr>
+        <td></td>
+        <td>REV. 0</td>
+        <td>REV. A</td>
+        <td>REV. B</td>
+        <td>REV. C</td>
+        <td>REV. D</td>
+      </tr>
+      <tr>
+        <td>DATA:</td>
+        <td contenteditable="true">__/__/____</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td>EXECUÇÃO:</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td>APROVAÇÃO:</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td>ELABORAÇÃO:</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+    </table>
+  </div>
+
+  <button class="botao-secundario" onclick="adicionarFolhaRostoAoDocumentoBase()">
+    Adicionar Folha de Rosto ao Documento Base
+  </button>
+</section>
 <main class="container">
 
   <section class="card ativo" id="historico">

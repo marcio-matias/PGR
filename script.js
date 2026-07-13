@@ -605,18 +605,23 @@ function adicionarInventarioAoDocumentoBase() {
   adicionarAoDocumento("Inventário de Riscos Ocupacionais", tabela.outerHTML);
   alert("Inventário adicionado ao Documento Base.");
 }
-
 function adicionarEpiMatriz() {
   let setor = pegarValor("setorEpi");
 
   if (setor === "Outros") {
-  setor = pegarValor("outroSetorEpi");
+    setor = pegarValor("outroSetorEpi");
   }
+
   const tipo = pegarValor("tipoEpi");
   const descricao = pegarValor("descricaoEpi");
   const ca = pegarValor("caEpi");
   const validadeCa = pegarValor("validadeCaEpi");
-  const periodicidade = pegarValor("periodicidadeEpi");
+
+  let periodicidade = pegarValor("periodicidadeEpi");
+
+  if (periodicidade === "Outro (informar)") {
+    periodicidade = pegarValor("outraPeriodicidadeEpi");
+  }
 
   if (!setor || !tipo || !descricao || !ca) {
     alert("Preencha setor/área, tipo de EPI, descrição do EPI e CA.");
@@ -631,6 +636,7 @@ function adicionarEpiMatriz() {
     validadeCa,
     periodicidade
   });
+
   const tabela = document.querySelector("#tabelaMatrizEpi tbody");
 
   if (!tabela) {
@@ -651,16 +657,22 @@ function adicionarEpiMatriz() {
 
   limparCampo("setorEpi");
   limparCampo("outroSetorEpi");
-
-  const campoOutroSetor = document.getElementById("campoOutroSetorEpi");
-  if (campoOutroSetor) {
-  campoOutroSetor.style.display = "none";
-  }
   limparCampo("tipoEpi");
   limparCampo("descricaoEpi");
   limparCampo("caEpi");
   limparCampo("validadeCaEpi");
   limparCampo("periodicidadeEpi");
+  limparCampo("outraPeriodicidadeEpi");
+
+  const campoOutroSetor = document.getElementById("outroSetorEpi");
+  if (campoOutroSetor) {
+    campoOutroSetor.style.display = "none";
+  }
+
+  const campoOutraPeriodicidade = document.getElementById("outraPeriodicidadeEpi");
+  if (campoOutraPeriodicidade) {
+    campoOutraPeriodicidade.style.display = "none";
+  }
 }
 
 function adicionarMatrizEpiAoDocumentoBase() {
@@ -845,6 +857,41 @@ function controlarOutraPeriodicidadeEpi() {
     limparCampo("outraPeriodicidadeEpi");
   }
 }
+function adicionarFolhaRostoAoDocumentoBase() {
+  const folha = document.querySelector(".folha-rosto-documento");
 
+  if (!folha) {
+    alert("Folha de rosto não encontrada.");
+    return;
+  }
+
+  adicionarAoDocumento("Folha de Rosto", folha.outerHTML);
+  alert("Folha de rosto adicionada ao Documento Base.");
+}
+function inserirLogoFolhaRosto(event) {
+  const arquivo = event.target.files[0];
+
+  if (!arquivo) {
+    return;
+  }
+
+  const leitor = new FileReader();
+
+  leitor.onload = function () {
+    const imagem = document.getElementById("logoFolhaRosto");
+    const texto = document.getElementById("textoLogoFolha");
+
+    if (!imagem || !texto) {
+      alert("Área da logo não encontrada.");
+      return;
+    }
+
+    imagem.src = leitor.result;
+    imagem.style.display = "block";
+    texto.style.display = "none";
+  };
+
+  leitor.readAsDataURL(arquivo);
+}
 document.addEventListener("DOMContentLoaded", carregarResponsaveisHistorico);
 f

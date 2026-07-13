@@ -93,6 +93,10 @@ body {
   gap: 16px 24px;
 }
 
+.campo-largo {
+  grid-column: 1 / -1;
+}
+
 label {
   display: flex;
   flex-direction: column;
@@ -115,6 +119,28 @@ textarea {
 textarea {
   min-height: 90px;
   resize: vertical;
+}
+
+.campo-condicional {
+  margin-top: 8px;
+}
+
+.campo-busca {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.campo-busca input {
+  flex: 1;
+  margin-top: 0;
+}
+
+.campo-busca button {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
 table {
@@ -177,52 +203,7 @@ td button {
   margin: 30px 0;
 }
 
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 12mm;
-  }
-
-  body {
-    background: white;
-  }
-
-  .menu,
-  .topo,
-  .acoes {
-    display: none;
-  }
-
-  .container {
-    margin: 0;
-    padding: 0;
-    max-width: none;
-  }
-
-  .card {
-    display: none;
-    box-shadow: none;
-    border: none;
-  }
-
-  #documento-base {
-    display: block;
-  }
-
-  .documento-final {
-    border: none;
-    background: white;
-    padding: 0;
-  }
-
-  table {
-    font-size: 10px;
-  }
-
-  th,
-  td {
-    padding: 6px;
-  }
+/* Histórico */
 
 td[contenteditable="true"] {
   background: #fffdf2;
@@ -233,6 +214,7 @@ td[contenteditable="true"]:focus {
   outline: 2px solid #17496f;
   background: #ffffff;
 }
+
 .input-tabela {
   width: 100%;
   border: none;
@@ -246,6 +228,7 @@ td[contenteditable="true"]:focus {
   outline: 2px solid #17496f;
   background: #ffffff;
 }
+
 .cadastro-responsavel {
   margin-top: 20px;
   padding: 16px;
@@ -258,34 +241,22 @@ td[contenteditable="true"]:focus {
   margin-top: 0;
   color: #0f2f4a;
 }
+
 .botao-tabela {
   padding: 6px 10px;
   font-size: 12px;
   border-radius: 6px;
 }
+
 .botoes-historico {
   margin-top: 12px;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-}.card
-
- .campo-busca {
-  display: flex;
-  gap: 8px;
-  margin-top: 6px;
 }
 
-.campo-busca input {
-  flex: 1;
-  margin-top: 0;
-}
+/* GES/GHE e riscos */
 
-.campo-busca button {
-  padding: 10px 16px;
-  font-size: 14px;
-  border-radius: 6px;
-  white-space: nowrap;
 .quadro-riscos {
   margin-top: 20px;
   padding: 18px;
@@ -311,16 +282,6 @@ td[contenteditable="true"]:focus {
   font-size: 15px;
 }
 
-.acoes-modulo {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.acoes-modulo button {
-  min-width: 190px;
-}
 .botoes-riscos-siglas {
   display: flex;
   flex-wrap: wrap;
@@ -337,18 +298,144 @@ td[contenteditable="true"]:focus {
   font-size: 18px;
   border-radius: 8px;
 }
-function controlarOutroSetorEpi() {
-  const setor = pegarValor("setorEpi");
-  const campoOutroSetor = document.getElementById("campoOutroSetorEpi");
 
-  if (!campoOutroSetor) {
-    return;
+.acoes-modulo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.acoes-modulo button {
+  min-width: 190px;
+}
+
+/* Folha de rosto */
+
+.folha-rosto-documento {
+  background: white;
+  color: black;
+  width: 520px;
+  min-height: 690px;
+  margin: 0 auto 30px auto;
+  padding: 10px;
+  border: 1px solid #999;
+  font-size: 8px;
+  overflow: hidden;
+}
+
+.tabela-folha-rosto {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+  font-size: 8px;
+}
+
+.tabela-folha-rosto th,
+.tabela-folha-rosto td {
+  border: 1px solid #333;
+  padding: 2px;
+  vertical-align: top;
+}
+
+.logo-folha {
+  width: 70px;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+/* Impressão */
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+@media print {
+  .botao-logo {
+    display: none;
+  }
+}
+  body {
+    background: white;
   }
 
-  if (setor === "Outros") {
-    campoOutroSetor.style.display = "flex";
-  } else {
-    campoOutroSetor.style.display = "none";
-    limparCampo("outroSetorEpi");
+  .menu {
+    display: none;
   }
+
+  .topo,
+  .container {
+    margin-left: 0;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  .acoes,
+  .acoes-modulo,
+  .botoes-historico,
+  .cadastro-responsavel {
+    display: none;
+  }
+
+  .topo {
+    background: white;
+    color: black;
+    border-bottom: 2px solid black;
+  }
+
+  .tabela-container {
+    overflow: visible;
+  }
+
+  table {
+    font-size: 10px;
+  }
+
+  th,
+  td {
+    padding: 6px;
+  }
+
+  .folha-rosto-documento {
+    width: 100%;
+    min-height: auto;
+    border: none;
+    padding: 0;
+    font-size: 10px;
+  }
+
+  .tabela-folha-rosto {
+    font-size: 10px;
+  }
+
+  .tabela-folha-rosto th,
+  .tabela-folha-rosto td {
+    padding: 4px;
+  }
+}
+.area-logo {
+  width: 100%;
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.area-logo img {
+  max-width: 60px;
+  max-height: 45px;
+  object-fit: contain;
+}
+
+.botao-logo {
+  margin-top: 4px;
+  padding: 4px 6px;
+  font-size: 9px;
+  border-radius: 4px;
 }
