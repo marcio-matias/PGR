@@ -315,12 +315,12 @@ td[contenteditable="true"]:focus {
 .folha-rosto-documento {
   background: white;
   color: black;
-  width: 520px;
-  min-height: 690px;
+  width: 680px;
+  min-height: 900px;
   margin: 0 auto 30px auto;
-  padding: 10px;
+  padding: 14px;
   border: 1px solid #999;
-  font-size: 8px;
+  font-size: 10px;
   overflow: hidden;
 }
 
@@ -328,22 +328,36 @@ td[contenteditable="true"]:focus {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 0;
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .tabela-folha-rosto th,
 .tabela-folha-rosto td {
   border: 1px solid #333;
-  padding: 2px;
+  padding: 4px;
   vertical-align: top;
 }
 
 .logo-folha {
-  width: 70px;
+  width: 95px;
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
 }
+
+.area-logo img {
+  max-width: 75px;
+  max-height: 55px;
+  object-fit: contain;
+}
+
+.botao-logo {
+  margin-top: 4px;
+  padding: 5px 7px;
+  font-size: 10px;
+  border-radius: 4px;
+}
+
 
 /* Impressão */
 
