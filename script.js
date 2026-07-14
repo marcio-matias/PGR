@@ -1,4 +1,4 @@
-console.log("PGR iniciado com sucesso.");
+﻿console.log("PGR iniciado com sucesso.");
 
 let listaGhe = [];
 let listaMatrizEpi = [];
@@ -291,12 +291,19 @@ function salvarResponsavelHistorico() {
   salvarResponsaveisHistorico(responsaveis);
   carregarResponsaveisHistorico();
 
+  const selectResponsavel = document.getElementById("responsavelSalvoHistorico");
+
+  if (selectResponsavel) {
+    selectResponsavel.value = String(responsaveis.length - 1);
+  }
+
+  atualizarElaboradorFolhaRosto({ nome, registro });
+
   limparCampo("nomeResponsavelHistorico");
   limparCampo("registroResponsavelHistorico");
 
   alert("Responsável salvo com sucesso.");
 }
-
 function carregarResponsaveisHistorico() {
   const select = document.getElementById("responsavelSalvoHistorico");
 
@@ -346,8 +353,37 @@ function aplicarResponsavelLinhaSelecionada() {
   }
 
   celulaResponsavel.textContent = `${responsavel.nome} - ${responsavel.registro}`;
+  atualizarElaboradorFolhaRosto(responsavel);
 }
 
+function preencherElaboradorFolhaRosto() {
+  const select = document.getElementById("responsavelSalvoHistorico");
+
+  if (!select || select.value === "") {
+    return;
+  }
+
+  const responsaveis = obterResponsaveisHistorico();
+  const responsavel = responsaveis[select.value];
+
+  if (!responsavel) {
+    return;
+  }
+
+  atualizarElaboradorFolhaRosto(responsavel);
+}
+
+function atualizarElaboradorFolhaRosto(responsavel) {
+  const campoNome = document.getElementById("nomeElaboradorFolhaRosto");
+  const campoRegistro = document.getElementById("registroElaboradorFolhaRosto");
+
+  if (!campoNome || !campoRegistro || !responsavel) {
+    return;
+  }
+
+  campoNome.textContent = responsavel.nome;
+  campoRegistro.textContent = responsavel.registro;
+}
 function removerResponsaveisDuplicados() {
   const responsaveis = obterResponsaveisHistorico();
   const mapa = new Map();
@@ -910,18 +946,58 @@ function enviarIndiceRevisoesParaFolha() {
     const colunas = linha.querySelectorAll("td");
 
     const revisao = colunas[0]?.innerText.trim() || "";
-    const data = colunas[1]?.querySelector("input")?.value || "";
+    const data = formatarDataBrasileira(colunas[1]?.querySelector("input")?.value || "");
     const descricao = colunas[2]?.innerText.trim() || "";
+    const responsavelCompleto = colunas[3]?.innerText.trim() || "";
+    const responsavel = obterNomeSemRegistro(responsavelCompleto);
+
+    if (!revisao && !data && !descricao && !responsavel) {
+      return;
+    }
 
     const novaLinha = tabelaDestino.insertRow();
 
     novaLinha.innerHTML = `
       <td class="coluna-rev" contenteditable="true">${textoSeguro(revisao)}</td>
+      <td contenteditable="true">${textoSeguro(data)}</td>
       <td contenteditable="true">${textoSeguro(descricao)}</td>
+      <td contenteditable="true">${textoSeguro(responsavel)}</td>
     `;
   });
 
+  if (tabelaDestino.children.length === 0) {
+    const linhaVazia = tabelaDestino.insertRow();
+
+    linhaVazia.innerHTML = `
+      <td class="coluna-rev" style="height: 260px;"></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    `;
+  }
+
   alert("Índice de Revisões enviado para a Folha de Rosto.");
 }
+
+function formatarDataBrasileira(dataIso) {
+  if (!dataIso) {
+    return "";
+  }
+
+  const partes = dataIso.split("-");
+
+  if (partes.length !== 3) {
+    return dataIso;
+  }
+
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+function obterNomeSemRegistro(texto) {
+  if (!texto) {
+    return "";
+  }
+
+  return texto.split(" - ")[0].trim();
+}
 document.addEventListener("DOMContentLoaded", carregarResponsaveisHistorico);
-f

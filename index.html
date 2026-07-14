@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -36,7 +36,14 @@
 
     <div class="folha-rosto-documento">
 
-      <table class="tabela-folha-rosto">
+      <table class="tabela-folha-rosto tabela-cabecalho-folha">
+        <colgroup>
+          <col class="col-logo-folha">
+          <col class="col-rotulo-folha">
+          <col class="col-conteudo-folha">
+          <col class="col-registro-folha">
+        </colgroup>
+
         <tr>
           <td rowspan="3" class="logo-folha">
             <div class="area-logo">
@@ -62,27 +69,36 @@
           </td>
 
           <td>Documento:</td>
-          <td contenteditable="true">
+          <td colspan="2" contenteditable="true">
             <strong>PGR - PROGRAMA DE GERENCIAMENTO DE RISCOS</strong>
           </td>
         </tr>
 
         <tr>
           <td>Empresa:</td>
-          <td contenteditable="true">PETRÓLEO BRASILEIRO S.A PETROBRAS</td>
+          <td colspan="2" contenteditable="true">PETRÓLEO BRASILEIRO S.A PETROBRAS</td>
         </tr>
 
         <tr>
           <td>Elaborador:</td>
-          <td contenteditable="true">Nome do elaborador - Registro</td>
+          <td id="nomeElaboradorFolhaRosto" contenteditable="true">Nome do elaborador</td>
+          <td id="registroElaboradorFolhaRosto" contenteditable="true">Registro</td>
         </tr>
       </table>
+      <table class="tabela-folha-rosto tabela-indice-folha" id="tabelaIndiceFolha">
+        <colgroup>
+          <col class="col-rev-folha">
+          <col class="col-data-folha">
+          <col class="col-descricao-folha">
+          <col class="col-responsavel-folha">
+        </colgroup>
 
-      <table class="tabela-folha-rosto" id="tabelaIndiceFolha">
         <thead>
           <tr>
             <th class="coluna-rev">REV</th>
+            <th>DATA</th>
             <th>ÍNDICE DE REVISÕES</th>
+            <th>RESPONSÁVEL</th>
           </tr>
         </thead>
 
@@ -90,11 +106,19 @@
           <tr>
             <td class="coluna-rev" style="height: 260px;"></td>
             <td></td>
+            <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
 
-      <table class="tabela-folha-rosto">
+      <table class="tabela-folha-rosto tabela-assinaturas-folha">
+        <colgroup>
+          <col class="col-assinatura-folha">
+          <col class="col-assinatura-folha">
+          <col class="col-assinatura-folha">
+        </colgroup>
+
         <tr>
           <th colspan="3">ASSINATURAS:</th>
         </tr>
@@ -109,53 +133,6 @@
           <td style="height: 70px;"></td>
           <td></td>
           <td></td>
-        </tr>
-      </table>
-
-      <table class="tabela-folha-rosto">
-        <tr>
-          <td></td>
-          <td>REV. 0</td>
-          <td>REV. A</td>
-          <td>REV. B</td>
-          <td>REV. C</td>
-          <td>REV. D</td>
-        </tr>
-
-        <tr>
-          <td>DATA:</td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-        </tr>
-
-        <tr>
-          <td>EXECUÇÃO:</td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-        </tr>
-
-        <tr>
-          <td>APROVAÇÃO:</td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-        </tr>
-
-        <tr>
-          <td>ELABORAÇÃO:</td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
         </tr>
       </table>
 
@@ -232,7 +209,7 @@
       </button>
 
       <label>Selecionar responsável salvo
-        <select id="responsavelSalvoHistorico">
+        <select id="responsavelSalvoHistorico" onchange="preencherElaboradorFolhaRosto()">
           <option value="">Selecione</option>
         </select>
       </label>

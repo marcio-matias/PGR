@@ -1,4 +1,4 @@
-* {
+﻿* {
   box-sizing: border-box;
 }
 
@@ -315,12 +315,12 @@ td[contenteditable="true"]:focus {
 .folha-rosto-documento {
   background: white;
   color: black;
-  width: 680px;
-  min-height: 900px;
+  width: 816px;
+  min-height: 1080px;
   margin: 0 auto 30px auto;
-  padding: 14px;
+  padding: 18px;
   border: 1px solid #999;
-  font-size: 10px;
+  font-size: 12px;
   overflow: hidden;
 }
 
@@ -328,36 +328,84 @@ td[contenteditable="true"]:focus {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 0;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .tabela-folha-rosto th,
 .tabela-folha-rosto td {
   border: 1px solid #333;
-  padding: 4px;
+  padding: 6px;
   vertical-align: top;
+}
+.tabela-cabecalho-folha,
+.tabela-indice-folha,
+.tabela-assinaturas-folha {
+  table-layout: fixed;
+}
+
+.col-logo-folha {
+  width: 115px;
+}
+
+.col-rotulo-folha {
+  width: 115px;
+}
+
+.col-registro-folha {
+  width: 150px;
+}
+
+.col-rev-folha {
+  width: 42px;
+}
+
+.col-data-folha {
+  width: 115px;
+}
+
+.col-responsavel-folha {
+  width: 150px;
+}
+
+.col-assinatura-folha {
+  width: 33.333%;
 }
 
 .logo-folha {
-  width: 95px;
+  width: 115px;
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
 }
 
+.area-logo {
+  width: 100%;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .area-logo img {
-  max-width: 75px;
-  max-height: 55px;
+  max-width: 90px;
+  max-height: 66px;
   object-fit: contain;
 }
 
 .botao-logo {
-  margin-top: 4px;
-  padding: 5px 7px;
-  font-size: 10px;
-  border-radius: 4px;
+  margin-top: 6px;
+  padding: 7px 9px;
+  font-size: 11px;
+  border-radius: 5px;
 }
 
+.coluna-rev {
+  width: 42px;
+  min-width: 42px;
+  max-width: 42px;
+  text-align: center;
+  white-space: nowrap;
+}
 
 /* Impressão */
 
@@ -366,11 +414,7 @@ td[contenteditable="true"]:focus {
     size: A4 landscape;
     margin: 12mm;
   }
-@media print {
-  .botao-logo {
-    display: none;
-  }
-}
+
   body {
     background: white;
   }
@@ -393,7 +437,8 @@ td[contenteditable="true"]:focus {
   .acoes,
   .acoes-modulo,
   .botoes-historico,
-  .cadastro-responsavel {
+  .cadastro-responsavel,
+  .botao-logo {
     display: none;
   }
 
@@ -421,42 +466,15 @@ td[contenteditable="true"]:focus {
     min-height: auto;
     border: none;
     padding: 0;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .tabela-folha-rosto {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .tabela-folha-rosto th,
   .tabela-folha-rosto td {
-    padding: 4px;
+    padding: 5px;
   }
-}
-.area-logo {
-  width: 100%;
-  min-height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.area-logo img {
-  max-width: 60px;
-  max-height: 45px;
-  object-fit: contain;
-}
-
-.botao-logo {
-  margin-top: 4px;
-  padding: 4px 6px;
-  font-size: 9px;
-  border-radius: 4px;
-}
-.coluna-rev {
-  width: 34px;
-  min-width: 34px;
-  max-width: 34px;
-  text-align: center;
-  white-space: nowrap;
 }
