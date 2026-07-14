@@ -126,9 +126,9 @@
         </tr>
 
         <tr>
-          <td>Execução:</td>
-          <td>Aprovação:</td>
           <td>Elaboração:</td>
+          <td>Implantação:</td>
+          <td>Aprovação:</td>
         </tr>
 
         <tr>
@@ -159,7 +159,7 @@
       </thead>
 
       <tbody>
-        <tr onclick="selecionarLinhaHistorico(this)">
+        <tr class="revisao-protegida" onclick="selecionarLinhaHistorico(this)">
           <td contenteditable="true">00</td>
           <td>
             <input type="date" class="input-tabela">
@@ -167,29 +167,16 @@
           <td contenteditable="true">Emissão inicial do PGR</td>
           <td contenteditable="true" class="responsavel-historico"></td>
         </tr>
-
-        <tr onclick="selecionarLinhaHistorico(this)">
-          <td contenteditable="true">01</td>
-          <td>
-            <input type="date" class="input-tabela">
-          </td>
-          <td contenteditable="true">Revisão do inventário de riscos</td>
-          <td contenteditable="true" class="responsavel-historico"></td>
-        </tr>
       </tbody>
     </table>
 
     <div class="botoes-historico">
-      <button class="botao-secundario" onclick="inserirLinhaHistorico()">
-        Inserir linha
+      <button class="botao-secundario" onclick="enviarIndiceRevisoesParaFolha()">
+        Salvar Índice na Folha de Rosto
       </button>
 
       <button class="botao-secundario" onclick="excluirLinhaHistorico()">
-        Excluir linha selecionada
-      </button>
-
-      <button class="botao-secundario" onclick="enviarIndiceRevisoesParaFolha()">
-        Enviar para Folha de Rosto
+        Excluir revisão selecionada
       </button>
     </div>
 
@@ -206,12 +193,18 @@
         </label>
       </div>
 
-      <button class="botao-secundario" onclick="salvarResponsavelHistorico()">
-        Salvar responsável
-      </button>
+      <div class="botoes-responsavel">
+        <button class="botao-secundario" onclick="salvarResponsavelHistorico()">
+          Salvar responsável
+        </button>
+
+        <button class="botao-secundario" onclick="enviarResponsavelParaFolhaRosto()">
+          Salvar Responsável na Folha de Rosto
+        </button>
+      </div>
 
       <label>Selecionar responsável salvo
-        <select id="responsavelSalvoHistorico" onchange="preencherElaboradorFolhaRosto()">
+        <select id="responsavelSalvoHistorico" onchange="preencherCamposResponsavelHistorico()">
           <option value="">Selecione</option>
         </select>
       </label>

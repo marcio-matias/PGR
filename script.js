@@ -224,6 +224,7 @@ function inserirLinhaHistorico() {
     return;
   }
 
+  const numeroRevisao = String(tabela.rows.length).padStart(2, "0");
   const novaLinha = tabela.insertRow();
 
   novaLinha.onclick = function () {
@@ -231,7 +232,7 @@ function inserirLinhaHistorico() {
   };
 
   novaLinha.innerHTML = `
-    <td contenteditable="true"></td>
+    <td contenteditable="true">${numeroRevisao}</td>
     <td>
       <input type="date" class="input-tabela">
     </td>
@@ -241,23 +242,107 @@ function inserirLinhaHistorico() {
 
   selecionarLinhaHistorico(novaLinha);
 }
-
 function excluirLinhaHistorico() {
-  if (!linhaHistoricoSelecionada) {
-    alert("Clique primeiro na linha que deseja excluir.");
+  let revisao = obterRevisaoSelecionadaHistorico();
+
+  if (!revisao) {
+    revisao = prompt("Informe o número da revisão que deseja excluir da folha de rosto. Ex.: 01");
+  }
+
+  revisao = normalizarNumeroRevisao(revisao);
+
+  if (!revisao) {
     return;
   }
 
-  const confirmar = confirm("Deseja excluir a linha selecionada do histórico?");
+  if (revisao === "00") {
+    alert("A revisão 00 é a emissão inicial do PGR e deve permanecer protegida na folha de rosto.");
+    return;
+  }
+
+  const confirmar = confirm(`Deseja excluir a revisão ${revisao} apenas da folha de rosto?`);
 
   if (!confirmar) {
     return;
   }
-
-  linhaHistoricoSelecionada.remove();
+  const totalRemovidoFolha = excluirRevisaoDaFolhaRosto(revisao);
   linhaHistoricoSelecionada = null;
+
+  if (totalRemovidoFolha > 0) {
+    alert(`Revisão ${revisao} excluída da folha de rosto.`);
+  } else {
+    alert(`Revisão ${revisao} não foi encontrada na folha de rosto.`);
+  }
 }
 
+function obterRevisaoSelecionadaHistorico() {
+  if (!linhaHistoricoSelecionada) {
+    return "";
+  }
+
+  const celulaRevisao = linhaHistoricoSelecionada.querySelector("td");
+  return celulaRevisao ? celulaRevisao.innerText.trim() : "";
+}
+
+function excluirRevisaoDaMatrizHistorico(revisao) {
+  const tabela = document.querySelector("#tabelaHistorico tbody");
+
+  if (!tabela) {
+    return;
+  }
+
+  const linhas = Array.from(tabela.querySelectorAll("tr"));
+
+  linhas.forEach((linha) => {
+    const primeiraCelula = linha.querySelector("td");
+    const revisaoLinha = primeiraCelula ? normalizarNumeroRevisao(primeiraCelula.innerText) : "";
+
+    if (revisaoLinha === revisao && revisaoLinha !== "00") {
+      linha.remove();
+    }
+  });
+}
+
+function excluirRevisaoDaFolhaRosto(revisao) {
+  if (!revisao || revisao === "00") {
+    return 0;
+  }
+
+  const tabelaDestino = document.querySelector("#tabelaIndiceFolha tbody");
+
+  if (!tabelaDestino) {
+    return 0;
+  }
+
+  let totalRemovido = 0;
+  const linhas = Array.from(tabelaDestino.querySelectorAll("tr"));
+
+  linhas.forEach((linha) => {
+    const primeiraCelula = linha.querySelector("td");
+    const revisaoLinha = primeiraCelula ? normalizarNumeroRevisao(primeiraCelula.innerText) : "";
+
+    if (revisaoLinha === revisao) {
+      linha.remove();
+      totalRemovido += 1;
+    }
+  });
+
+  return totalRemovido;
+}
+
+function normalizarNumeroRevisao(revisao) {
+  const texto = String(revisao || "").trim();
+
+  if (!texto) {
+    return "";
+  }
+
+  if (/^\d+$/.test(texto)) {
+    return texto.padStart(2, "0");
+  }
+
+  return texto;
+}
 function obterResponsaveisHistorico() {
   const dados = localStorage.getItem("responsaveisHistoricoPgr");
 
@@ -297,10 +382,7 @@ function salvarResponsavelHistorico() {
     selectResponsavel.value = String(responsaveis.length - 1);
   }
 
-  atualizarElaboradorFolhaRosto({ nome, registro });
-
-  limparCampo("nomeResponsavelHistorico");
-  limparCampo("registroResponsavelHistorico");
+  preencherCamposResponsavelHistorico();
 
   alert("Responsável salvo com sucesso.");
 }
@@ -324,6 +406,31 @@ function carregarResponsaveisHistorico() {
   });
 }
 
+function preencherCamposResponsavelHistorico() {
+  const select = document.getElementById("responsavelSalvoHistorico");
+  const campoNome = document.getElementById("nomeResponsavelHistorico");
+  const campoRegistro = document.getElementById("registroResponsavelHistorico");
+
+  if (!select || !campoNome || !campoRegistro) {
+    return;
+  }
+
+  if (select.value === "") {
+    campoNome.value = "";
+    campoRegistro.value = "";
+    return;
+  }
+
+  const responsaveis = obterResponsaveisHistorico();
+  const responsavel = responsaveis[select.value];
+
+  if (!responsavel) {
+    return;
+  }
+
+  campoNome.value = responsavel.nome;
+  campoRegistro.value = responsavel.registro;
+}
 function aplicarResponsavelLinhaSelecionada() {
   const select = document.getElementById("responsavelSalvoHistorico");
 
@@ -351,9 +458,7 @@ function aplicarResponsavelLinhaSelecionada() {
     alert("Célula de responsável não encontrada.");
     return;
   }
-
-  celulaResponsavel.textContent = `${responsavel.nome} - ${responsavel.registro}`;
-  atualizarElaboradorFolhaRosto(responsavel);
+  celulaResponsavel.textContent = responsavel.nome;
 }
 
 function preencherElaboradorFolhaRosto() {
@@ -372,7 +477,6 @@ function preencherElaboradorFolhaRosto() {
 
   atualizarElaboradorFolhaRosto(responsavel);
 }
-
 function atualizarElaboradorFolhaRosto(responsavel) {
   const campoNome = document.getElementById("nomeElaboradorFolhaRosto");
   const campoRegistro = document.getElementById("registroElaboradorFolhaRosto");
@@ -929,6 +1033,10 @@ function inserirLogoFolhaRosto(event) {
 
   leitor.readAsDataURL(arquivo);
 }
+function enviarResponsavelParaFolhaRosto() {
+  preencherElaboradorFolhaRosto();
+  alert("Responsável técnico enviado para a Folha de Rosto.");
+}
 function enviarIndiceRevisoesParaFolha() {
   const tabelaOrigem = document.querySelector("#tabelaHistorico tbody");
   const tabelaDestino = document.querySelector("#tabelaIndiceFolha tbody");
@@ -938,9 +1046,10 @@ function enviarIndiceRevisoesParaFolha() {
     return;
   }
 
-  tabelaDestino.innerHTML = "";
+  removerLinhaVaziaIndiceFolha(tabelaDestino);
 
   const linhas = tabelaOrigem.querySelectorAll("tr");
+  let quantidadeEnviada = 0;
 
   linhas.forEach((linha) => {
     const colunas = linha.querySelectorAll("td");
@@ -948,21 +1057,23 @@ function enviarIndiceRevisoesParaFolha() {
     const revisao = colunas[0]?.innerText.trim() || "";
     const data = formatarDataBrasileira(colunas[1]?.querySelector("input")?.value || "");
     const descricao = colunas[2]?.innerText.trim() || "";
-    const responsavelCompleto = colunas[3]?.innerText.trim() || "";
-    const responsavel = obterNomeSemRegistro(responsavelCompleto);
+    const responsavel = colunas[3]?.innerText.trim() || "";
 
     if (!revisao && !data && !descricao && !responsavel) {
       return;
     }
 
-    const novaLinha = tabelaDestino.insertRow();
+    const linhaExistente = encontrarLinhaIndiceFolhaPorRevisao(tabelaDestino, revisao);
+    const linhaDestino = linhaExistente || tabelaDestino.insertRow();
 
-    novaLinha.innerHTML = `
-      <td class="coluna-rev" contenteditable="true">${textoSeguro(revisao)}</td>
-      <td contenteditable="true">${textoSeguro(data)}</td>
-      <td contenteditable="true">${textoSeguro(descricao)}</td>
-      <td contenteditable="true">${textoSeguro(responsavel)}</td>
+    linhaDestino.innerHTML = `
+      <td class="coluna-rev">${textoSeguro(revisao)}</td>
+      <td>${textoSeguro(data)}</td>
+      <td>${textoSeguro(descricao)}</td>
+      <td>${textoSeguro(responsavel)}</td>
     `;
+
+    quantidadeEnviada += 1;
   });
 
   if (tabelaDestino.children.length === 0) {
@@ -976,7 +1087,39 @@ function enviarIndiceRevisoesParaFolha() {
     `;
   }
 
-  alert("Índice de Revisões enviado para a Folha de Rosto.");
+  preencherElaboradorFolhaRosto();
+
+  if (quantidadeEnviada === 0) {
+    alert("Nenhuma revisão preenchida para salvar na Folha de Rosto.");
+    return;
+  }
+
+  alert("Índice de Revisões salvo na Folha de Rosto sem apagar revisões anteriores.");
+}
+
+function removerLinhaVaziaIndiceFolha(tabelaDestino) {
+  const linhas = Array.from(tabelaDestino.querySelectorAll("tr"));
+
+  linhas.forEach((linha) => {
+    const textoLinha = linha.innerText.trim();
+
+    if (textoLinha === "") {
+      linha.remove();
+    }
+  });
+}
+
+function encontrarLinhaIndiceFolhaPorRevisao(tabelaDestino, revisao) {
+  if (!revisao) {
+    return null;
+  }
+
+  const linhas = Array.from(tabelaDestino.querySelectorAll("tr"));
+
+  return linhas.find((linha) => {
+    const primeiraCelula = linha.querySelector("td");
+    return primeiraCelula && normalizarNumeroRevisao(primeiraCelula.innerText) === normalizarNumeroRevisao(revisao);
+  }) || null;
 }
 
 function formatarDataBrasileira(dataIso) {

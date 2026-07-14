@@ -248,7 +248,8 @@ td[contenteditable="true"]:focus {
   border-radius: 6px;
 }
 
-.botoes-historico {
+.botoes-historico,
+.botoes-responsavel {
   margin-top: 12px;
   display: flex;
   gap: 10px;
@@ -441,6 +442,7 @@ td[contenteditable="true"]:focus {
   .acoes,
   .acoes-modulo,
   .botoes-historico,
+  .botoes-responsavel,
   .cadastro-responsavel,
   .botao-logo {
     display: none;
