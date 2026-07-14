@@ -344,27 +344,31 @@ td[contenteditable="true"]:focus {
 }
 
 .col-logo-folha {
-  width: 115px;
+  width: 133px;
 }
 
 .col-rotulo-folha {
   width: 115px;
 }
 
+.col-rotulo-registro-folha {
+  width: 95px;
+}
+
 .col-registro-folha {
-  width: 150px;
+  width: 100px;
 }
 
 .col-rev-folha {
-  width: 42px;
+  width: 38px;
 }
 
 .col-data-folha {
-  width: 115px;
+  width: 95px;
 }
 
 .col-responsavel-folha {
-  width: 150px;
+  width: 195px;
 }
 
 .col-assinatura-folha {
@@ -372,7 +376,7 @@ td[contenteditable="true"]:focus {
 }
 
 .logo-folha {
-  width: 115px;
+  width: 133px;
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
@@ -477,4 +481,18 @@ td[contenteditable="true"]:focus {
   .tabela-folha-rosto td {
     padding: 5px;
   }
+}
+.rotulo-registro-mte {
+  font-weight: bold;
+  white-space: nowrap;
+  text-align: left;
+  padding-right: 4px;
+}
+#registroElaboradorFolhaRosto {
+  padding-left: 4px;
+}
+#registroElaboradorFolhaRosto,
+.tabela-indice-folha th:last-child,
+.tabela-indice-folha td:last-child {
+  text-align: left;
 }
